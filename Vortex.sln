@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28306.52
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{AF50C4EB-A350-4A95-8FC4-DD7EF555A0B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physics", "Physics\Physics.csproj", "{23CFEA38-6527-4CEF-A950-636455913EA9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF50C4EB-A350-4A95-8FC4-DD7EF555A0B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF50C4EB-A350-4A95-8FC4-DD7EF555A0B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF50C4EB-A350-4A95-8FC4-DD7EF555A0B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF50C4EB-A350-4A95-8FC4-DD7EF555A0B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23CFEA38-6527-4CEF-A950-636455913EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23CFEA38-6527-4CEF-A950-636455913EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23CFEA38-6527-4CEF-A950-636455913EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23CFEA38-6527-4CEF-A950-636455913EA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B8FA5FE-C81A-44E8-9CD6-4CDB057881A9}
+	EndGlobalSection
+EndGlobal
