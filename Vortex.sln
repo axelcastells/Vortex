@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physics", "Physics\Physics.csproj", "{23CFEA38-6527-4CEF-A950-636455913EA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math", "Math\Math.csproj", "{06B3245F-322C-404E-8437-1D4BD4BE63C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{23CFEA38-6527-4CEF-A950-636455913EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23CFEA38-6527-4CEF-A950-636455913EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23CFEA38-6527-4CEF-A950-636455913EA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06B3245F-322C-404E-8437-1D4BD4BE63C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06B3245F-322C-404E-8437-1D4BD4BE63C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06B3245F-322C-404E-8437-1D4BD4BE63C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06B3245F-322C-404E-8437-1D4BD4BE63C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,7 +6,7 @@ using Vortex;
 
 namespace Vortex.Physics
 {
-    public class Kinematic
+    public class VPhysics
     {
     }
 }

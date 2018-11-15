@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Vortex
 {
-    public class CoreTester
+    public class VCore
     {
         public static string HelloWorld()
         {
