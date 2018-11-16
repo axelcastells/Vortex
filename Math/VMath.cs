@@ -23,5 +23,10 @@ namespace Vortex.Math
         {
             return new Vector3D(a.x * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
         }
+
+        public static Vector3D Normalize(Vector3D v)
+        {
+            return v / Magnitude(v);
+        }
     }
 }
