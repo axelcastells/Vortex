@@ -26,5 +26,10 @@ namespace Vortex
             return new Vector3D(left.x / righ.x, left.y / righ.y, left.z / righ.z);
         }
 
+        public static Vector3D operator/(Vector3D left, float right)
+        {
+            return new Vector3D(left.x / right, left.y / right, left.z / right);
+        }
+
     }
 }

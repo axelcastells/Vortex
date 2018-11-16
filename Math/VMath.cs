@@ -26,7 +26,7 @@ namespace Vortex.Math
 
         public static Vector3D Normalize(Vector3D v)
         {
-            return v / Magnitude(v);
+            return v / (float)Magnitude(v);
         }
     }
 }
