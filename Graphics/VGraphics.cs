@@ -11,8 +11,8 @@ namespace Vortex.Graphics
 {
     public class VWindow : GameWindow
     {
-        public VWindow()
-            : base(800, 600, GraphicsMode.Default, "OpenTK Quick Start Sample")
+        public VWindow(int w, int h, string winName)
+            : base(w, h, GraphicsMode.Default, winName)
         {
             VSync = VSyncMode.On;
         }
@@ -66,16 +66,5 @@ namespace Vortex.Graphics
             SwapBuffers();
         }
 
-        [STAThread]
-        public static void Main()
-        {
-            // The 'using' idiom guarantees proper resource cleanup.
-            // We request 30 UpdateFrame events per second, and unlimited
-            // RenderFrame events (as fast as the computer can handle).
-            using (VWindow game = new VWindow())
-            {
-                game.Run(30.0);
-            }
-        }
     }
 }

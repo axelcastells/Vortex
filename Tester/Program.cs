@@ -10,6 +10,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        VWindow.Main();
+        VWindow game = new VWindow(400,400, "Vortex Engine - Window");
+        game.Run(30);
     }
 }
