@@ -1,17 +1,21 @@
 #pragma once
 #include <string>
+#include <GLFW\glfw3.h>
+#include <glad\glad.h>
 
 namespace Vortex 
 {
-	static class VCore 
+	class VRenderer 
 	{
 	public:
-		VCore();
+		VRenderer();
+		~VRenderer();
+		void Init(int w, int h, const char* windowTitle);
+		void Run();
 
-		static void Init();
+	private:
+		GLFWwindow* window;
 
-		static void PabloEscobar();
-
-		static std::string HelloWorld();
+		void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	};
 }
