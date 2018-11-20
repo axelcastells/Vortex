@@ -2,6 +2,7 @@
 #include <string>
 
 typedef struct GLFWwindow;
+typedef unsigned int GLuint;
 
 namespace Vortex
 {
@@ -23,6 +24,8 @@ namespace Vortex
 
 			void Init(int w, int h, const char* windowTitle);
 			void Run();
+
+			unsigned int CompileShader(unsigned int shaderMode, const char *shaderPath);
 
 		private:
 			VRenderer();

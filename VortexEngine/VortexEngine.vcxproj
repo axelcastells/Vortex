@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="VInput.cpp" />
     <ClCompile Include="VRenderer.cpp" />
     <ClCompile Include="glad.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataManager.h" />
     <ClInclude Include="VInput.h" />
     <ClInclude Include="VRenderer.h" />
   </ItemGroup>

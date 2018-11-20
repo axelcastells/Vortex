@@ -9,7 +9,7 @@ int main()
 {
 	VR->Init(800, 900, "VortexEngine - Game Window");
 	VR->Run();
-
+	
 	system("pause");
 }
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
