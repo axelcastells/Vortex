@@ -64,14 +64,13 @@ void VRenderer::Run() {
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-		std::string str = DataManager::FileManager::ReadFile(".\\vertexshader");
-		const char* vertexShaderSource = str.c_str();
-		unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
+		unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, ".\\vertexshader");
 
-		//const char* fragmentShaderSource = DataManager::FileManager::ReadFile(".\\fragmentshader");
-		//unsigned int fragmentShader = CompileShader(GL_VERTEX_SHADER, fragmentShaderSource);
+		unsigned int fragmentShader = CompileShader(GL_FRAGMENT_SHADER, ".\\fragmentshader");
 
-
+		unsigned int shaders[] = { vertexShader, fragmentShader };
+		unsigned int shaderProgram = SetupShaderProgram(2, shaders);
+		UseShaderProgram(shaderProgram);
 
 		// Events check and buffers swaping
 		glfwSwapBuffers(window);
@@ -85,7 +84,10 @@ void VRenderer::FramebufferSizeCallback(GLFWwindow* window, int width, int heigh
 	glViewport(0, 0, width, height);
 }
 
-unsigned int VRenderer::CompileShader(unsigned int shaderMode, const char *shaderSrc) {
+unsigned int VRenderer::CompileShader(unsigned int shaderMode, const char *shaderPath) {
+	std::string str = DataManager::FileManager::ReadFile(shaderPath);
+	const char* shaderSrc = str.c_str();
+	
 	unsigned int shader;
 	shader = glCreateShader(shaderMode);
 
@@ -94,12 +96,43 @@ unsigned int VRenderer::CompileShader(unsigned int shaderMode, const char *shade
 
 	int success;
 	char infoLog[512];
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 	if (!success) {
 		glGetShaderInfoLog(shader, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 
 	return shader;
+}
+
+// Creates and links the shader program
+unsigned int VRenderer::SetupShaderProgram(unsigned int size, unsigned int *compiledShaderID) {
+	unsigned int shaderProgram;
+	shaderProgram = glCreateProgram();
+
+	for (int i = 0; i < size-1; i++)
+{
+		glAttachShader(shaderProgram, compiledShaderID[i]);
+		glDeleteShader(compiledShaderID[i]);
+	}
+	glLinkProgram(shaderProgram);
+
+	int success;
+	char infoLog[512];
+
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	if (!success) {
+		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+	}
+
+	for (int i = 0; i < size - 1; i++) {
+		glDeleteShader(compiledShaderID[i]);
+	}
+
+	return shaderProgram;
+}
+
+void VRenderer::UseShaderProgram(unsigned int linkedShaderProgram) {
+	glUseProgram(linkedShaderProgram);
 }

@@ -26,7 +26,8 @@ namespace Vortex
 			void Run();
 
 			unsigned int CompileShader(unsigned int shaderMode, const char *shaderPath);
-
+			unsigned int SetupShaderProgram(unsigned int size, unsigned int *compiledShaderID);
+			void UseShaderProgram(unsigned int linkedShaderProgram);
 		private:
 			VRenderer();
 
