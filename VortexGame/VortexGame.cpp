@@ -1,12 +1,14 @@
 // VortexGame.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
-#include <VEngine.h>
+#include <VRenderer.h>
+#include <VInput.h>
 
 using namespace Vortex;
+using namespace Vortex::Graphics;
 int main()
 {
-	VEngine::Instance()->GetRenderer().Init(400, 400, "Hello");
-	VEngine::Instance()->GetRenderer().Run();
+	VR->Init(400, 400, "VortexEngine - Game Window");
+	VR->Run();
 
 	system("pause");
 }

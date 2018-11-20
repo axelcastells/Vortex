@@ -1,7 +1,9 @@
 #include "VRenderer.h"
+#include "VInput.h"
 #include <ostream>
 
-using namespace Vortex;
+using namespace Vortex::Graphics;
+using namespace Vortex::Input;
 
 VRenderer::VRenderer() {
 
@@ -38,6 +40,14 @@ void VRenderer::Init(int w, int h, const char* windowTitle) {
 void VRenderer::Run() {
 	while (!glfwWindowShouldClose(window))
 	{
+		// Input
+		VI->ProcessInput(window);
+
+		// Rendering
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Events check and buffers swaping
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
