@@ -1,16 +1,14 @@
 // VortexGame.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
-#include <VortexEngine\VortexEngine.h>
-#include <stdio.h>
+#include <VEngine.h>
 
 using namespace Vortex;
 int main()
 {
-	VRenderer* r = new VRenderer();
-	r->Init(400, 400, "Hello");
-	r->Run();
+	VEngine::Instance()->GetRenderer().Init(400, 400, "Hello");
+	VEngine::Instance()->GetRenderer().Run();
 
-	system("Pause");
+	system("pause");
 }
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
 // Depurar programa: F5 o menú Depurar > Iniciar depuración

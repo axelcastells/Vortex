@@ -19,12 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="VEngine.cpp" />
+    <ClCompile Include="VRenderer.cpp" />
     <ClCompile Include="glad.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core.h" />
-    <ClInclude Include="VortexEngine.h" />
+    <ClInclude Include="VEngine.h" />
+    <ClInclude Include="VRenderer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

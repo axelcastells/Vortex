@@ -3,7 +3,7 @@
 #include <GLFW\glfw3.h>
 #include <glad\glad.h>
 
-namespace Vortex 
+namespace Vortex
 {
 	class VRenderer 
 	{

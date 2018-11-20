@@ -1,8 +1,15 @@
-#include "Core.h"
+#include "VRenderer.h"
 #include <ostream>
 
-
 using namespace Vortex;
+
+VRenderer::VRenderer() {
+
+}
+
+VRenderer::~VRenderer() {
+
+}
 
 void VRenderer::Init(int w, int h, const char* windowTitle) {
 	glfwInit();
@@ -34,6 +41,8 @@ void VRenderer::Run() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	glfwTerminate();
 }
 
 void VRenderer::FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
