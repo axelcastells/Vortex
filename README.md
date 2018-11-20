@@ -1,3 +1,6 @@
 # Vortex
 
- Dynamic Game Library developed in C# (.NET 3.5)
+ Static Link Game Library developed in C++.
+
+ Dependencies:
+ GLFW3
