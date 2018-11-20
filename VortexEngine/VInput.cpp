@@ -1,3 +1,6 @@
+#include <GLFW\glfw3.h>
+#include <memory>
+
 #include "VInput.h"
 
 using namespace Vortex::Input;

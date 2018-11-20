@@ -1,6 +1,9 @@
+#include <GLFW\glfw3.h>
+#include <glad\glad.h>
+#include <ostream>
+
 #include "VRenderer.h"
 #include "VInput.h"
-#include <ostream>
 
 using namespace Vortex::Graphics;
 using namespace Vortex::Input;

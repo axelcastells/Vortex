@@ -1,6 +1,5 @@
 #pragma once
-#include <GLFW\glfw3.h>
-#include <memory>
+
 
 namespace Vortex {
 	namespace Input {
