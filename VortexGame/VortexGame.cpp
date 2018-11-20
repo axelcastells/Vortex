@@ -7,7 +7,7 @@ using namespace Vortex;
 using namespace Vortex::Graphics;
 int main()
 {
-	VR->Init(400, 400, "VortexEngine - Game Window");
+	VR->Init(800, 900, "VortexEngine - Game Window");
 	VR->Run();
 
 	system("pause");

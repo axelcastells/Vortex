@@ -13,7 +13,8 @@ VRenderer::VRenderer() {
 }
 
 VRenderer::~VRenderer() {
-
+	delete window;
+	delete this;
 }
 
 void VRenderer::Init(int w, int h, const char* windowTitle) {

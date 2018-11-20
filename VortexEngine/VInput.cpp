@@ -10,7 +10,7 @@ VInput::VInput() {
 }
 
 VInput::~VInput() {
-
+	delete this;
 }
 
 void VInput::ProcessInput(GLFWwindow *window) {
