@@ -28,12 +28,16 @@ namespace Vortex
 			unsigned int CompileShader(unsigned int shaderMode, const char *shaderPath);
 			unsigned int SetupShaderProgram(unsigned int size, unsigned int *compiledShaderID);
 			void UseShaderProgram(unsigned int linkedShaderProgram);
+
+
 		private:
 			VRenderer();
 
 			GLFWwindow* window;
 
-			void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
+			
 		};
+
+		void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	}	
 }
