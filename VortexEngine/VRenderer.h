@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <map>
+#include <list>
 
 typedef struct GLFWwindow;
 typedef unsigned int GLuint;
@@ -9,6 +11,8 @@ namespace Vortex
 	namespace Graphics {
 
 #define VR VRenderer::Instance()
+
+		typedef enum ShaderType {VERTEX, FRAGMENT, GEOMETRY};
 
 		class VRenderer
 		{
@@ -25,16 +29,19 @@ namespace Vortex
 			void Init(int w, int h, const char* windowTitle);
 			void Run();
 
-			unsigned int CompileShader(unsigned int shaderMode, const char *shaderPath);
-			unsigned int SetupShaderProgram(unsigned int size, unsigned int *compiledShaderID);
-			void UseShaderProgram(unsigned int linkedShaderProgram);
+			void CompileShader(ShaderType shaderMode, const char *shaderPath);
+			void SetupShaderProgram(const char* newProgramName);
+			void UseShaderProgram(const char* programName);
 
+			unsigned int GetShaderProgram(char* name);
 
 		private:
 			VRenderer();
 
 			GLFWwindow* window;
 
+			std::list<unsigned int> compiledShaders;
+			std::map<const char*, unsigned int> shaderPrograms;
 			
 		};
 

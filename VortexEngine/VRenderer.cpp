@@ -41,12 +41,16 @@ void VRenderer::Init(int w, int h, const char* windowTitle) {
 	}
 }
 
+unsigned int VRenderer::GetShaderProgram(char* name) {
+	return shaderPrograms[name];
+}
+
 void VRenderer::Run() {
 
-	unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, ".\\vertexshader");
-	unsigned int fragmentShader = CompileShader(GL_FRAGMENT_SHADER, ".\\fragmentshader");
+	CompileShader(ShaderType::VERTEX, ".\\vertexshader");
+	CompileShader(ShaderType::FRAGMENT, ".\\fragmentshader");
 
-	unsigned int shaderProgram = SetupShaderProgram(2, &(vertexShader, fragmentShader));
+	SetupShaderProgram("mainProgram");
 
 
 	float vertices[] = {
@@ -84,7 +88,7 @@ void VRenderer::Run() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 
-		UseShaderProgram(shaderProgram);
+		UseShaderProgram("mainProgram");
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		// Unbind VAO, but no need to do it every time
@@ -105,12 +109,28 @@ void Vortex::Graphics::FramebufferSizeCallback(GLFWwindow* window, int width, in
 	glViewport(0, 0, width, height);
 }
 
-unsigned int VRenderer::CompileShader(unsigned int shaderMode, const char *shaderPath) {
+void VRenderer::CompileShader(ShaderType shaderMode, const char *shaderPath) {
 	std::string str = DataManager::FileManager::ReadFile(shaderPath);
 	const char* shaderSrc = str.c_str();
 	
 	unsigned int shader;
-	shader = glCreateShader(shaderMode);
+	switch (shaderMode)
+	{
+	case Vortex::Graphics::VERTEX: {
+		shader = glCreateShader(GL_VERTEX_SHADER);
+	}
+		break;
+	case Vortex::Graphics::FRAGMENT: {
+		shader = glCreateShader(GL_FRAGMENT_SHADER);
+	}
+		break;
+	case Vortex::Graphics::GEOMETRY: {
+		shader = glCreateShader(GL_GEOMETRY_SHADER);
+	}
+		break;
+	default:
+		break;
+	}	
 
 	glShaderSource(shader, 1, &shaderSrc, NULL);
 	glCompileShader(shader);
@@ -124,18 +144,19 @@ unsigned int VRenderer::CompileShader(unsigned int shaderMode, const char *shade
 		std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
 
-	return shader;
+	compiledShaders.push_back(shader);
 }
 
-// Creates and links the shader program
-unsigned int VRenderer::SetupShaderProgram(unsigned int size, unsigned int *compiledShaderID) {
+// Creates and links the shader program using all compiled shaders in compiledShaders list
+// shaderNames is a pointer to char array
+void VRenderer::SetupShaderProgram(const char* newProgramName) {
 	unsigned int shaderProgram;
 	shaderProgram = glCreateProgram();
 
-	for (int i = 0; i < size-1; i++)
-{
-		glAttachShader(shaderProgram, compiledShaderID[i]);
-		glDeleteShader(compiledShaderID[i]);
+	for (std::list<unsigned int>::iterator it = compiledShaders.begin(); it != compiledShaders.end(); it++)
+	{
+		glAttachShader(shaderProgram, *it);
+		glDeleteShader(*it);
 	}
 	glLinkProgram(shaderProgram);
 
@@ -147,13 +168,10 @@ unsigned int VRenderer::SetupShaderProgram(unsigned int size, unsigned int *comp
 		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 	}
 
-	for (int i = 0; i < size - 1; i++) {
-		glDeleteShader(compiledShaderID[i]);
-	}
-
-	return shaderProgram;
+	compiledShaders.clear();
+	shaderPrograms.insert(std::pair<const char*, unsigned int>(newProgramName, shaderProgram));
 }
 
-void VRenderer::UseShaderProgram(unsigned int linkedShaderProgram) {
-	glUseProgram(linkedShaderProgram);
+void VRenderer::UseShaderProgram(const char* programName) {
+	glUseProgram(shaderPrograms[programName]);
 }
