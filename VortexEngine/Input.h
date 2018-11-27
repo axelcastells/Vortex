@@ -17,6 +17,7 @@ namespace Vortex {
 				return instance;
 			}
 
+			void PollEvents();
 			void ProcessInput(GLFWwindow *window);
 
 		private:

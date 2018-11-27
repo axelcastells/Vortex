@@ -1,15 +1,46 @@
 // VortexGame.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
-#include <VRenderer.h>
-#include <VInput.h>
+#include <Renderer.h>
+#include <Input.h>
 
 using namespace Vortex;
-using namespace Vortex::Graphics;
+using namespace Graphics;
+using namespace Input;
 int main()
 {
-	VR->Init(800, 900, "VortexEngine - Game Window");
-	VR->Run();
+	const char* buff = "mainBuffer";
 
+	VR->Init(800, 900, "VortexEngine - Game Window");
+	//VR->Run();
+
+	
+	VR->CompileShader(ShaderType::VERTEX, ".\\vertexshader");
+	VR->CompileShader(ShaderType::FRAGMENT, ".\\fragmentshader");
+
+	VR->SetupShaderProgram("mainProgram");
+
+	float vertices[] = {
+	-0.5f, -0.5f, 0.0f,	// left
+	 0.5f, -0.5f, 0.0f,	// right
+	 0.0f,  0.5f, 0.0f	// up
+	};
+	VR->BindAndSetBuffers(buff, vertices);
+
+	while (!VR->WindowShouldClose()) {
+		VI->ProcessInput(VR->GetWindow());
+
+		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
+
+		VR->UseShaderProgram("mainProgram");
+
+		DrawTriangle(VR->GetBufferData(buff), vertices);
+		
+		VR->SwapBuffers();
+		VI->PollEvents();
+	}
+
+	VR->Terminate();
+	
 	system("pause");
 }
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar

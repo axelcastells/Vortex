@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 
-#include "VRenderer.h"
-#include "VInput.h"
+#include "Renderer.h"
+#include "Input.h"
 #include "DataManager.h"
 
 using namespace Vortex::Graphics;
@@ -41,8 +41,16 @@ void VRenderer::Init(int w, int h, const char* windowTitle) {
 	}
 }
 
-unsigned int VRenderer::GetShaderProgram(char* name) {
+unsigned int VRenderer::GetShaderProgram(const char* name) {
 	return shaderPrograms[name];
+}
+
+Buffer* VRenderer::GetBufferData(const char* name) {
+	return buffers[name];
+}
+
+bool VRenderer::WindowShouldClose() {
+	return glfwWindowShouldClose(window);
 }
 
 void VRenderer::Run() {
@@ -67,7 +75,6 @@ void VRenderer::Run() {
 	
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
@@ -103,6 +110,51 @@ void VRenderer::Run() {
 	glDeleteBuffers(1, &VBO);
 
 	glfwTerminate();
+}
+
+GLFWwindow* VRenderer::GetWindow() {
+	return window;
+}
+
+void VRenderer::SwapBuffers() {
+	glfwSwapBuffers(window);
+}
+
+void VRenderer::Terminate() {
+	//glDeleteVertexArrays(1, &VAO);
+	//glDeleteBuffers(1, &VBO);
+
+	glfwTerminate();
+}
+
+void Vortex::Graphics::DrawTriangle(Buffer* buff, void* vertexArray) {
+	glBindVertexArray(buff->VAO);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glBindVertexArray(0);
+}
+
+//template<typename T>
+void VRenderer::BindAndSetBuffers(const char* bufferId, void* data) {
+	Buffer buff;
+	glGenVertexArrays(1, &buff.VAO);
+	glGenBuffers(1, &buff.VBO);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(buff.VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, buff.VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	glBindVertexArray(0);
+
+	buffers.insert(std::pair<const char*, Buffer*>(bufferId, &buff));
 }
 
 void Vortex::Graphics::FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
@@ -174,4 +226,9 @@ void VRenderer::SetupShaderProgram(const char* newProgramName) {
 
 void VRenderer::UseShaderProgram(const char* programName) {
 	glUseProgram(shaderPrograms[programName]);
+}
+
+void VRenderer::ClearScreen(float r, float g, float b, float a) {
+	glClearColor(r, g, b, a);
+	glClear(GL_COLOR_BUFFER_BIT);
 }

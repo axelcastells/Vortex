@@ -1,7 +1,7 @@
 #include <GLFW\glfw3.h>
 #include <memory>
 
-#include "VInput.h"
+#include "Input.h"
 
 using namespace Vortex::Input;
 
@@ -11,6 +11,10 @@ VInput::VInput() {
 
 VInput::~VInput() {
 
+}
+
+void VInput::PollEvents() {
+	glfwPollEvents();
 }
 
 void VInput::ProcessInput(GLFWwindow *window) {
