@@ -1,8 +1,9 @@
 # Vortex
+Static Link Game Library developed in C++
+Dependencies: ALL 
+-
 
- Game Library and Auxiliar Modules.
 
-C++ Static Link Library
-Graphics
 
-C# Dynamic Link Library
+# VortexS
+Dynamic Link Game Library developed in C#
