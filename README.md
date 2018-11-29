@@ -1,6 +1,8 @@
 # Vortex
 
- Static Link Game Library developed in C++.
+ Game Library and Auxiliar Modules.
 
- Dependencies:
- GLFW3
+C++ Static Link Library
+Graphics
+
+C# Dynamic Link Library
