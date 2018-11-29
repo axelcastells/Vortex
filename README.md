@@ -1,6 +1,7 @@
 # Vortex
 Static Link Game Library developed in C++
-Dependencies: ALL 
+
+Dependencies: ALL compiled with library
 -
 
 
