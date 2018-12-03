@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{40298E9C-7BF3-469A-AA3D-4A30AFEDCD36}</ProjectGuid>
+    <ProjectGuid>{9AFB05B2-F356-42F7-BCFB-AB5FC49C8714}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VortexS</RootNamespace>
-    <AssemblyName>VortexS_Core</AssemblyName>
+    <RootNamespace>VortexS.Math</RootNamespace>
+    <AssemblyName>VortexS_Math</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
