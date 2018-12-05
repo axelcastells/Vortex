@@ -34,7 +34,7 @@ namespace SVortex.Physics
 
         #endregion
         public delegate void ExecutionLoop();
-        public ExecutionLoop executionLoop;
+        public ExecutionLoop Run;
 
         public void SetMode(Mode mode)
         {
@@ -42,7 +42,7 @@ namespace SVortex.Physics
             {
                 case Mode.FK:
                     {
-                        executionLoop = RunFK;
+                        Run = RunFK;
                     }
                     break;
                 case Mode.IK:
@@ -69,7 +69,7 @@ namespace SVortex.Physics
 
         public string DebugLinkedData()
         {
-            return ("Joints Size: " + Joints.Capacity + "Solution Size: " + Solution.Capacity);
+            return ("Joints Size: " + Joints.Count + "Solution Size: " + Solution.Count);
         }
 
         public PositionRotation ForwardKinematics(List<float> Solution)
