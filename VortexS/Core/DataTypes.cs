@@ -6,7 +6,7 @@ using System.Text;
 namespace SVortex
 {
     [System.Serializable]
-    public struct PositionRotation
+    internal struct PositionRotation
     {
         Vector3 position;
         Quaternion rotation;
@@ -29,7 +29,7 @@ namespace SVortex
     }
 
     [System.Serializable]
-    public class Transform
+    internal class Transform
     {
         public Vector3 position, eulerAngles, scale;
         public Quaternion rotation;
@@ -41,7 +41,7 @@ namespace SVortex
     }
 
     [System.Serializable]
-    public class Vector3
+    internal class Vector3
     {
         // Properties:
         public float x, y, z;
@@ -77,7 +77,7 @@ namespace SVortex
     }
 
     [System.Serializable]
-    public class AxisAngle
+    internal class AxisAngle
     {
         // Properties:
         public float x, y, z, angle;
@@ -96,7 +96,7 @@ namespace SVortex
     }
 
     [System.Serializable]
-    public class Quaternion
+    internal class Quaternion
     {
         // Properties:
         private float w, x, y, z;
