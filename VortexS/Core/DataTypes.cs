@@ -3,8 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VortexS.Math
+namespace SVortex
 {
+    [System.Serializable]
+    public class Transform
+    {
+        public Vector3 position, eulerAngles, scale;
+
+        public Transform() { position = Vector3.Zero(); eulerAngles = Vector3.Zero(); scale = Vector3.One(); }
+        public Transform(Vector3 p, Vector3 r, Vector3 s) { position = p; eulerAngles = r; scale = s; }
+    }
+
+    [System.Serializable]
     public class Vector3
     {
         // Properties:
@@ -26,8 +36,12 @@ namespace VortexS.Math
         }
 
         public Vector3 Normalized() { return Normalize(this); }
+
+        public static Vector3 Zero() { return new Vector3(0); }
+        public static Vector3 One() { return new Vector3(1); }
     }
 
+    [System.Serializable]
     public class AxisAngle
     {
         // Properties:
@@ -46,10 +60,11 @@ namespace VortexS.Math
         ~AxisAngle() { }
     }
 
+    [System.Serializable]
     public class Quaternion
     {
         // Properties:
-        public float w, x, y, z;
+        private float w, x, y, z;
 
         // Functions:
         public Quaternion() { w = 1; x = 0; y = 0; z = 0; }
