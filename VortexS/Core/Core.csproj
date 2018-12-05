@@ -7,8 +7,8 @@
     <ProjectGuid>{40298E9C-7BF3-469A-AA3D-4A30AFEDCD36}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VortexS</RootNamespace>
-    <AssemblyName>VortexS</AssemblyName>
+    <RootNamespace>SVortex</RootNamespace>
+    <AssemblyName>SVortex</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

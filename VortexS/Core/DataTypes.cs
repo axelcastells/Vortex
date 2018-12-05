@@ -6,9 +6,35 @@ using System.Text;
 namespace SVortex
 {
     [System.Serializable]
+    public struct PositionRotation
+    {
+        Vector3 position;
+        Quaternion rotation;
+
+        public PositionRotation(Vector3 position, Quaternion rotation)
+        {
+            this.position = position;
+            this.rotation = rotation;
+        }
+        // PositionRotation to Vector3
+        public static implicit operator Vector3(PositionRotation pr)
+        {
+            return pr.position;
+        }
+        // PositionRotation to Quaternion
+        public static implicit operator Quaternion(PositionRotation pr)
+        {
+            return pr.rotation;
+        }
+    }
+
+    [System.Serializable]
     public class Transform
     {
         public Vector3 position, eulerAngles, scale;
+        public Quaternion rotation;
+        public Transform transform { get { return this; } set { } }
+
 
         public Transform() { position = Vector3.Zero(); eulerAngles = Vector3.Zero(); scale = Vector3.One(); }
         public Transform(Vector3 p, Vector3 r, Vector3 s) { position = p; eulerAngles = r; scale = s; }
@@ -25,6 +51,15 @@ namespace SVortex
         public Vector3() { }
         public Vector3(float _val) { x = y = z = _val; }
         ~Vector3() { }
+
+        public static Vector3 operator +(Vector3 v1, Vector3 v2)
+        {
+            Vector3 v = new Vector3();
+            v.x = v1.x + v2.x;
+            v.y = v1.y + v2.y;
+            v.z = v1.z + v2.z;
+            return v;
+        }
 
         Vector3 Normalize(Vector3 _v)
         {
@@ -102,7 +137,7 @@ namespace SVortex
             return _res;
         }
 
-        public Quaternion Multiply(Quaternion _q1, Quaternion _q2)
+        public static Quaternion operator *(Quaternion _q1, Quaternion _q2)
         {
             Quaternion _res = new Quaternion();
             _res.w = _q1.w * _q2.w - _q1.x * _q2.x - _q1.y * _q2.y - _q1.z * _q2.z;
@@ -112,7 +147,28 @@ namespace SVortex
             return Normalize(_res);
         }
 
-        public Quaternion Inverse(Quaternion _q)
+        public static Vector3 operator *(Quaternion quat, Vector3 vec)
+        {
+            float num = quat.x * 2f;
+            float num2 = quat.y * 2f;
+            float num3 = quat.z * 2f;
+            float num4 = quat.x * num;
+            float num5 = quat.y * num2;
+            float num6 = quat.z * num3;
+            float num7 = quat.x * num2;
+            float num8 = quat.x * num3;
+            float num9 = quat.y * num3;
+            float num10 = quat.w * num;
+            float num11 = quat.w * num2;
+            float num12 = quat.w * num3;
+            Vector3 result = new Vector3();
+            result.x = (1f - (num5 + num6)) * vec.x + (num7 - num12) * vec.y + (num8 + num11) * vec.z;
+            result.y = (num7 + num12) * vec.x + (1f - (num4 + num6)) * vec.y + (num9 - num10) * vec.z;
+            result.z = (num8 - num11) * vec.x + (num9 + num10) * vec.y + (1f - (num4 + num5)) * vec.z;
+            return result;
+        }
+
+        public static Quaternion Inverse(Quaternion _q)
         {
             _q = Normalize(_q);
             _q.x *= -1;
@@ -122,7 +178,7 @@ namespace SVortex
             return _q;
         }
 
-        public Quaternion AxisAngleToQuaternion(Vector3 _axis, float _angle)
+        public static Quaternion AxisAngleToQuaternion(Vector3 _axis, float _angle)
         {
             _axis = _axis.Normalized();
             Quaternion _q = new Quaternion();
@@ -133,12 +189,12 @@ namespace SVortex
             return _q;
         }
 
-        public Quaternion AxisAngleToQuaternion(AxisAngle _axisAngle)
+        public static Quaternion AxisAngleToQuaternion(AxisAngle _axisAngle)
         {
             return AxisAngleToQuaternion(new Vector3(_axisAngle.x, _axisAngle.y, _axisAngle.z), _axisAngle.angle);
         }
 
-        public AxisAngle QuaternionToAxisAngle(Quaternion _q)
+        public static AxisAngle QuaternionToAxisAngle(Quaternion _q)
         {
             AxisAngle _axAng = new AxisAngle();
             _axAng.angle = (float)(2 * System.Math.Acos(_q.w));

@@ -7,8 +7,8 @@
     <ProjectGuid>{B24501D3-440D-4FC5-9793-848FC001E622}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VortexS.Physics</RootNamespace>
-    <AssemblyName>VortexS_Physics</AssemblyName>
+    <RootNamespace>SVortex.Physics</RootNamespace>
+    <AssemblyName>SVortex_Physics</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

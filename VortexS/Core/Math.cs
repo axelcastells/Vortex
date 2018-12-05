@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SVortex
 {
-    public static class Math
+    public static class VMath
     {
         public static float Clamp(float value, float min, float max)
         {

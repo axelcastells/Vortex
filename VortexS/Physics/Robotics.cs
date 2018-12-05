@@ -6,15 +6,17 @@ using SVortex;
 
 namespace SVortex.Physics
 {
+    public enum Mode { FK, IK }
+
     [System.Serializable]
     public class RobotController
     {
-        public Transform BaseJoint;
+        #region Variables
+        public RobotJoint BaseJoint;
 
-
-        public RobotJoint[] Joints = null;
+        public List<RobotJoint> Joints = null;
         // The current angles
-        public float[] Solution = null;
+        public List<float> Solution = null;
 
         public Transform Effector;
         public Transform Destination;
@@ -26,38 +28,89 @@ namespace SVortex.Physics
 
         public float StopThreshold = 0.1f; // If closer than this, it stops
         public float SlowdownThreshold = 0.25f; // If closer than this, it linearly slows down
+        #endregion
+        #region Constructors
+        public RobotController() { }
 
-        private RobotController() { }
-        public RobotController(RobotJoint[] jnts, float[] sln)
+        #endregion
+        public delegate void ExecutionLoop();
+        public ExecutionLoop executionLoop;
+
+        public void SetMode(Mode mode)
         {
-            if(jnts.Length == sln.Length)
+            switch (mode)
             {
-                Joints = jnts;
-                Solution = sln;
+                case Mode.FK:
+                    {
+                        executionLoop = RunFK;
+                    }
+                    break;
+                case Mode.IK:
+                    {
+
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
-        public void ApproachTarget(Vector3 target)
+        private void RunFK()
         {
+            ForwardKinematics(Solution);
+        }
 
+        public void LinkData(ref List<RobotJoint> joint, ref List<float> solution)
+        {
+            BaseJoint = joint[0];
+            Solution = solution;
+            Joints = joint;
+        }
+
+        public string DebugLinkedData()
+        {
+            return ("Joints Size: " + Joints.Capacity + "Solution Size: " + Solution.Capacity);
+        }
+
+        public PositionRotation ForwardKinematics(List<float> Solution)
+        {
+            Vector3 prevPoint = Joints[0].transform.position;
+
+            // Takes object initial rotation into account
+            Quaternion rotation = Joints[0].transform.rotation;
+
+            
+            //TODO
+            for (int i = 0; i < Joints.Count - 1; i++)
+            {
+                rotation = Quaternion.AxisAngleToQuaternion(Joints[i].axis, Solution[i]) * rotation;
+
+                Vector3 newVectorRotate = rotation * (Joints[i + 1].startOffset);
+                Vector3 nextPoint = prevPoint + newVectorRotate;
+
+                prevPoint = nextPoint;
+            }
+
+
+
+            // The end of the effector
+            return new PositionRotation(prevPoint, rotation);
         }
     }
 
     public class RobotJoint
     {
         public Transform transform;
-
+        public Vector3 startOffset;
         public Vector3 axis;
         public float minAngle, maxAngle;
-
-        public Vector3 startOffset;
 
         public Vector3 zeroEuler;
 
 
         public float ClampAngle(float angle, float delta = 0)
         {
-            return Math.Clamp(angle + delta, minAngle, maxAngle);
+            return VMath.Clamp(angle + delta, minAngle, maxAngle);
         }
 
         // Get the current angle
