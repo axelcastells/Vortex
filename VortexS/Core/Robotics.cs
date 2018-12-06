@@ -18,10 +18,10 @@ namespace SVortex.Physics
         // The current angles
         public List<float> Solution = null;
 
-        public Transform Effector;
-        public Transform Destination;
+        internal Transform Effector;
+        internal Transform Destination;
         public float DistanceFromDestination;
-        private Vector3 target;
+        internal Vector3 target;
 
         public float DeltaGradient = 0.1f; // Used to simulate gradient (degrees)
         public float LearningRate = 0.1f; // How much we move depending on the gradient
@@ -60,6 +60,11 @@ namespace SVortex.Physics
             ForwardKinematics(Solution);
         }
 
+        private void RunIK()
+        {
+
+        }
+
         public void LinkData(ref List<RobotJoint> joint, ref List<float> solution)
         {
             BaseJoint = joint[0];
@@ -72,7 +77,7 @@ namespace SVortex.Physics
             return ("Joints Size: " + Joints.Count + "Solution Size: " + Solution.Count);
         }
 
-        public PositionRotation ForwardKinematics(List<float> Solution)
+        internal PositionRotation ForwardKinematics(List<float> Solution)
         {
             Vector3 prevPoint = Joints[0].transform.position;
 
@@ -100,12 +105,12 @@ namespace SVortex.Physics
 
     public class RobotJoint
     {
-        public Transform transform;
-        public Vector3 startOffset;
-        public Vector3 axis;
+        internal Transform transform;
+        internal Vector3 startOffset;
+        internal Vector3 axis;
         public float minAngle, maxAngle;
 
-        public Vector3 zeroEuler;
+        internal Vector3 zeroEuler;
 
 
         public float ClampAngle(float angle, float delta = 0)

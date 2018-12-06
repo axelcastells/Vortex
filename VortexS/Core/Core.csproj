@@ -42,6 +42,7 @@
     <Compile Include="DataTypes.cs" />
     <Compile Include="Math.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Robotics.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
