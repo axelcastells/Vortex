@@ -2,39 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SVortex;
 
-namespace SVortex.Physics
+namespace Vortex.Physics
 {
     public enum Mode { FK, IK }
+    public enum AxisConstraint { X, Y, Z }
 
     [System.Serializable]
     public class RobotController
     {
         #region Variables
-        public RobotJoint BaseJoint;
+        private RobotJoint BaseJoint;
 
-        public List<RobotJoint> Joints = null;
+        private List<RobotJoint> Joints = null;
         // The current angles
-        public List<float> Solution = null;
+        private List<float> Solution = null;
 
-        internal Transform Effector;
-        internal Transform Destination;
-        public float DistanceFromDestination;
-        internal Vector3 target;
+        private Transform Effector;
+        private Transform Destination;
+        private float DistanceFromDestination;
+        private Vector3 target;
 
-        public float DeltaGradient = 0.1f; // Used to simulate gradient (degrees)
-        public float LearningRate = 0.1f; // How much we move depending on the gradient
+        private float DeltaGradient = 0.1f; // Used to simulate gradient (degrees)
+        private float LearningRate = 0.1f; // How much we move depending on the gradient
 
-        public float StopThreshold = 0.1f; // If closer than this, it stops
-        public float SlowdownThreshold = 0.25f; // If closer than this, it linearly slows down
+        private float StopThreshold = 0.1f; // If closer than this, it stops
+        private float SlowdownThreshold = 0.25f; // If closer than this, it linearly slows down
         #endregion
         #region Constructors
-        public RobotController() { }
+        public RobotController()
+        {
+
+        }
 
         #endregion
-        public delegate void ExecutionLoop();
-        public ExecutionLoop Run;
+        internal delegate void ExecutionLoop();
+        internal ExecutionLoop executionLoop;
 
         public void SetMode(Mode mode)
         {
@@ -42,7 +45,7 @@ namespace SVortex.Physics
             {
                 case Mode.FK:
                     {
-                        Run = RunFK;
+                        executionLoop = RunFK;
                     }
                     break;
                 case Mode.IK:
@@ -55,9 +58,16 @@ namespace SVortex.Physics
             }
         }
 
+        public void Run()
+        {
+            executionLoop();
+        }
+
         private void RunFK()
         {
-            ForwardKinematics(Solution);
+
+            PositionRotation pr = ForwardKinematics(Solution);
+
         }
 
         private void RunIK()
@@ -65,11 +75,11 @@ namespace SVortex.Physics
 
         }
 
-        public void LinkData(ref List<RobotJoint> joint, ref List<float> solution)
+        public void LinkData(ref List<RobotJoint> _joints, ref List<float> _solution)
         {
-            BaseJoint = joint[0];
-            Solution = solution;
-            Joints = joint;
+            BaseJoint = _joints[0];
+            Solution = _solution;
+            Joints = _joints;
         }
 
         public string DebugLinkedData()
@@ -112,7 +122,30 @@ namespace SVortex.Physics
 
         internal Vector3 zeroEuler;
 
+        public RobotJoint(float _startOffsetX, float _startOffsetY, float _startOffsetZ, float _zeroEulerX, float _zeroEulerY, float _zeroEulerZ,
+                            AxisConstraint _axis)
+        {
+            zeroEuler = new Vector3(_zeroEulerX, _zeroEulerY, _zeroEulerZ);
+            startOffset = new Vector3(_startOffsetX, _startOffsetY, _startOffsetZ);
 
+            switch (_axis)
+            {
+                case AxisConstraint.X:
+                    axis = new Vector3(1, 0, 0);
+                    break;
+                case AxisConstraint.Y:
+                    axis = new Vector3(0, 1, 0);
+                    break;
+                case AxisConstraint.Z:
+                    axis = new Vector3(0, 0, 1);
+                    break;
+                default:
+                    break;
+            }
+            
+
+        }
+        
         public float ClampAngle(float angle, float delta = 0)
         {
             return VMath.Clamp(angle + delta, minAngle, maxAngle);

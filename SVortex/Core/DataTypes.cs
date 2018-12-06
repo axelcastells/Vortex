@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SVortex
+namespace Vortex
 {
     [System.Serializable]
     internal struct PositionRotation
@@ -29,10 +29,10 @@ namespace SVortex
     }
 
     [System.Serializable]
-    internal class Transform
+    public class Transform
     {
-        public Vector3 position, eulerAngles, scale;
-        public Quaternion rotation;
+        public Vector3 position, scale;
+        internal Quaternion rotation;
         public Transform transform { get { return this; } set { } }
 
 
@@ -41,7 +41,7 @@ namespace SVortex
     }
 
     [System.Serializable]
-    internal class Vector3
+    public class Vector3
     {
         // Properties:
         public float x, y, z;
