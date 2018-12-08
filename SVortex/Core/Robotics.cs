@@ -18,16 +18,6 @@ namespace Vortex.Physics
         // The current angles
         private List<float> Solution = null;
 
-        private Transform Effector;
-        private Transform Destination;
-        private float DistanceFromDestination;
-        private Vector3 target;
-
-        private float DeltaGradient = 0.1f; // Used to simulate gradient (degrees)
-        private float LearningRate = 0.1f; // How much we move depending on the gradient
-
-        private float StopThreshold = 0.1f; // If closer than this, it stops
-        private float SlowdownThreshold = 0.25f; // If closer than this, it linearly slows down
         #endregion
         #region Constructors
         public RobotController()
@@ -65,9 +55,7 @@ namespace Vortex.Physics
 
         private void RunFK()
         {
-
-            PositionRotation pr = ForwardKinematics(Solution);
-
+            ForwardKinematics();
         }
 
         private void RunIK()
@@ -75,9 +63,9 @@ namespace Vortex.Physics
 
         }
 
-        public void LinkData(ref List<RobotJoint> _joints, ref List<float> _solution)
+        public void LinkData(ref RobotJoint _baseJoint, ref List<RobotJoint> _joints, ref List<float> _solution)
         {
-            BaseJoint = _joints[0];
+            BaseJoint = _baseJoint;
             Solution = _solution;
             Joints = _joints;
         }
@@ -87,12 +75,21 @@ namespace Vortex.Physics
             return ("Joints Size: " + Joints.Count + "Solution Size: " + Solution.Count);
         }
 
-        internal PositionRotation ForwardKinematics(List<float> Solution)
+        internal void ForwardKinematics()
         {
-            Vector3 prevPoint = Joints[0].transform.position;
+            for (int i = 0; i < Joints.Count - 1; i++)
+            {
+                Joints[i].transform.rotation = Quaternion.AxisAngleToQuaternion(Joints[i].axis, Solution[i]);
+                //Joints[i].transform.rotation = Quaternion.AxisAngleToQuaternion(new Vector3(1, 1, 20), 90);
+            }
+        }
+
+        internal PositionRotation ForwardKinematicsSimulation(List<float> Solution)
+        {
+            Vector3 prevPoint = BaseJoint.transform.position;
 
             // Takes object initial rotation into account
-            Quaternion rotation = Joints[0].transform.rotation;
+            Quaternion rotation = BaseJoint.transform.rotation;
 
             
             //TODO
@@ -118,37 +115,23 @@ namespace Vortex.Physics
         internal Transform transform;
         internal Vector3 startOffset;
         internal Vector3 axis;
-        public float minAngle, maxAngle;
+        private float minAngle, maxAngle;
 
-        internal Vector3 zeroEuler;
-
-        public RobotJoint(float _startOffsetX, float _startOffsetY, float _startOffsetZ, float _zeroEulerX, float _zeroEulerY, float _zeroEulerZ,
-                            AxisConstraint _axis)
+        public RobotJoint(float _axisX, float _axisY, float _axisZ)//, float _angle, float _zeroAxisX, float _zeroAxisY, float _zeroAxisZ)//(float _positionX, float _positionY, float _positionZ, AxisAngle _angleAxis, Vector3 _axis)
         {
-            zeroEuler = new Vector3(_zeroEulerX, _zeroEulerY, _zeroEulerZ);
-            startOffset = new Vector3(_startOffsetX, _startOffsetY, _startOffsetZ);
-
-            switch (_axis)
-            {
-                case AxisConstraint.X:
-                    axis = new Vector3(1, 0, 0);
-                    break;
-                case AxisConstraint.Y:
-                    axis = new Vector3(0, 1, 0);
-                    break;
-                case AxisConstraint.Z:
-                    axis = new Vector3(0, 0, 1);
-                    break;
-                default:
-                    break;
-            }
-            
-
+            minAngle = 0;
+            maxAngle = 360;
+            transform = new Transform();
+            //transform.rotation = Quaternion.AxisAngleToQuaternion(new Vector3(_zeroAxisX, _zeroAxisY, _zeroAxisZ), _angle);
+            //startOffset = new Vector3(_positionX, _positionY, _positionZ);
+            //transform.position = startOffset;
+            //transform.rotation = Quaternion.AxisAngleToQuaternion(_angleAxis);
+            axis = new Vector3(_axisX, _axisY, _axisZ);
         }
         
         public float ClampAngle(float angle, float delta = 0)
         {
-            return VMath.Clamp(angle + delta, minAngle, maxAngle);
+            return angle;// VMath.Clamp(angle + delta, minAngle, maxAngle);
         }
 
         // Get the current angle
@@ -175,12 +158,20 @@ namespace Vortex.Physics
             return angle;
         }
 
-
+        public Vector3 GetAxis()
+        {
+            return axis;
+        }
 
         // Moves the angle to reach 
         public float MoveArm(float angle)
         {
             return SetAngle(angle);
+        }
+
+        public AxisAngle GetAxisAngle()
+        {
+            return Quaternion.QuaternionToAxisAngle(transform.rotation);
         }
     }
 }
