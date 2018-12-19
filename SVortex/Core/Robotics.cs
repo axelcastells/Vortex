@@ -5,67 +5,67 @@ using System.Text;
 
 namespace Vortex.Physics
 {
-    public enum Mode { FK, IK }
-    public enum AxisConstraint { X, Y, Z }
+    public enum Mode { FK, IK_CCD }
 
     [System.Serializable]
-    public class RobotController
+    public class IKCCDController : KinematicsController
     {
-        #region Variables
-        private RobotJoint BaseJoint;
+        private Transform target;
+        private float distanceFromDestination;
 
-        private List<RobotJoint> Joints = null;
-        // The current angles
-        private List<float> Solution = null;
+        private float deltaGradient = 0.1f;
+        private float learningRate = 0.1f;
 
-        #endregion
+        private float stopThreshold;
+        private float slowdownThreshold;
+    }
+
+    public class FKController : KinematicsController
+    {
         #region Constructors
-        public RobotController()
-        {
-
-        }
-
+        public FKController() { }
         #endregion
+
         internal delegate void ExecutionLoop();
         internal ExecutionLoop executionLoop;
 
-        public void SetMode(Mode mode)
-        {
-            switch (mode)
-            {
-                case Mode.FK:
-                    {
-                        executionLoop = RunFK;
-                    }
-                    break;
-                case Mode.IK:
-                    {
+        internal delegate void DataInitializer();
+        internal DataInitializer dataInitialize;
 
-                    }
-                    break;
-                default:
-                    break;
+        public void Init(Mode mode)
+        {
+            dataInitialize();
+        }
+
+        private void InitFK()
+        {
+
+        }
+
+        public override void Run()
+        {
+            for (int i = 0; i < Joints.Count - 1; i++)
+            {
+                Vector3 constraintAxis = ConstraintAxis(Joints[i].axis, Joints[i].axisConstraint);
+                float constraintAngle = ConstraintAngle(Joints[i], Solution[i]);
+
+                //Joints[i].transform.rotation = Quaternion.AxisAngleToQuaternion(constraintAxis, constraintAngle);
+                Joints[i].transform.rotation = MyQuaternion.AxisAngleToQuaternion(Joints[i].axis, Solution[i]);
             }
         }
 
-        public void Run()
+        private void InitIKCCD()
         {
-            executionLoop();
+            Solution = new float[Joints.Count].ToList<float>();
         }
 
-        private void RunFK()
-        {
-            ForwardKinematics();
-        }
-
-        private void RunIK()
+        internal void RunIKCCD()
         {
 
         }
 
-        public void LinkData(ref RobotJoint _baseJoint, ref List<RobotJoint> _joints, ref List<float> _solution)
+        public void LinkData(ref List<RobotJoint> _joints, ref List<float> _solution)
         {
-            BaseJoint = _baseJoint;
             Solution = _solution;
             Joints = _joints;
         }
@@ -75,87 +75,70 @@ namespace Vortex.Physics
             return ("Joints Size: " + Joints.Count + "Solution Size: " + Solution.Count);
         }
 
-        internal void ForwardKinematics()
+
+
+        public static float ClampAngle(float angle, float minAngle, float maxAngle, float delta = 0)
         {
-            for (int i = 0; i < Joints.Count - 1; i++)
-            {
-                Joints[i].transform.rotation = Quaternion.AxisAngleToQuaternion(Joints[i].axis, Solution[i]);
-                //Joints[i].transform.rotation = Quaternion.AxisAngleToQuaternion(new Vector3(1, 1, 20), 90);
-            }
+            return VMath.Clamp(angle + delta, minAngle, maxAngle);
         }
 
-        internal PositionRotation ForwardKinematicsSimulation(List<float> Solution)
+        public Vector3 ConstraintAxis(Vector3 originAxis, Vector3 targetAxis)
         {
-            Vector3 prevPoint = BaseJoint.transform.position;
+            Vector3 targetMag = targetAxis / Vector3.Magnitude(targetAxis);
+            Vector3 finalMag = targetAxis / (float)Math.Pow(Vector3.Magnitude(targetAxis), 2);
+            Vector3 cross = Vector3.Cross(originAxis, targetMag);
+            Vector3 proj = Vector3.Cross(cross, finalMag);
 
-            // Takes object initial rotation into account
-            Quaternion rotation = BaseJoint.transform.rotation;
-
-            
-            //TODO
-            for (int i = 0; i < Joints.Count - 1; i++)
-            {
-                rotation = Quaternion.AxisAngleToQuaternion(Joints[i].axis, Solution[i]) * rotation;
-
-                Vector3 newVectorRotate = rotation * (Joints[i + 1].startOffset);
-                Vector3 nextPoint = prevPoint + newVectorRotate;
-
-                prevPoint = nextPoint;
-            }
-
-
-
-            // The end of the effector
-            return new PositionRotation(prevPoint, rotation);
+            return proj.Normalized;
         }
+
+        public float ConstraintAngle(RobotJoint j, float newAngle)
+        {
+            return ClampAngle(newAngle, j.minAngle, j.maxAngle);
+        }
+    }
+
+    public abstract class KinematicsController
+    {
+        /// <summary>
+        /// Joint index 0 will always be the base joint.
+        /// Joint index Count - 1 will always be the effector.
+        /// </summary>
+        protected List<RobotJoint> Joints = null;
+        // The current angles
+        protected List<float> Solution = null;
+
+        public KinematicsController()
+        {
+
+        }
+
+        public abstract void Init();
+        public abstract void Run();
     }
 
     public class RobotJoint
     {
         internal Transform transform;
-        internal Vector3 startOffset;
+        //internal Vector3 startOffset;
         internal Vector3 axis;
-        private float minAngle, maxAngle;
+        public Vector3 axisConstraint;
+        public Vector3 zeroEuler;
+        public readonly float minAngle, maxAngle;
 
-        public RobotJoint(float _axisX, float _axisY, float _axisZ)//, float _angle, float _zeroAxisX, float _zeroAxisY, float _zeroAxisZ)//(float _positionX, float _positionY, float _positionZ, AxisAngle _angleAxis, Vector3 _axis)
+        public RobotJoint() { axis = new Vector3(0, 0, 0); transform = new Transform(); minAngle = 0; maxAngle = 90; zeroEuler = Vector3.Zero(); }
+        public RobotJoint(float _axisX, float _axisY, float _axisZ, float _constraintX, float _constraintY, float _constraintZ, float _minAngle, float _maxAngle)//, float _angle, float _zeroAxisX, float _zeroAxisY, float _zeroAxisZ)//(float _positionX, float _positionY, float _positionZ, AxisAngle _angleAxis, Vector3 _axis)
         {
-            minAngle = 0;
-            maxAngle = 360;
+            axisConstraint = new Vector3(_constraintX, _constraintY, _constraintZ);
+            minAngle = _minAngle;
+            maxAngle = _maxAngle;
             transform = new Transform();
-            //transform.rotation = Quaternion.AxisAngleToQuaternion(new Vector3(_zeroAxisX, _zeroAxisY, _zeroAxisZ), _angle);
-            //startOffset = new Vector3(_positionX, _positionY, _positionZ);
-            //transform.position = startOffset;
-            //transform.rotation = Quaternion.AxisAngleToQuaternion(_angleAxis);
             axis = new Vector3(_axisX, _axisY, _axisZ);
         }
         
-        public float ClampAngle(float angle, float delta = 0)
+        public void SetAxis(float _x, float _y, float _z)
         {
-            return angle;// VMath.Clamp(angle + delta, minAngle, maxAngle);
-        }
-
-        // Get the current angle
-        public float GetAngle()
-        {
-            float angle = 0;
-            if (axis.x == 1) angle = transform.eulerAngles.x;
-            else
-            if (axis.y == 1) angle = transform.eulerAngles.y;
-            else
-            if (axis.z == 1) angle = transform.eulerAngles.z;
-
-            return ClampAngle(angle);
-        }
-        public float SetAngle(float angle)
-        {
-            angle = ClampAngle(angle);
-            if (axis.x == 1) transform.eulerAngles = new Vector3(angle, 0, 0);
-            else
-            if (axis.y == 1) transform.eulerAngles = new Vector3(0, angle, 0);
-            else
-            if (axis.z == 1) transform.eulerAngles = new Vector3(0, 0, angle);
-
-            return angle;
+            axis = new Vector3(_x, _y, _z);
         }
 
         public Vector3 GetAxis()
@@ -163,15 +146,9 @@ namespace Vortex.Physics
             return axis;
         }
 
-        // Moves the angle to reach 
-        public float MoveArm(float angle)
-        {
-            return SetAngle(angle);
-        }
-
         public AxisAngle GetAxisAngle()
         {
-            return Quaternion.QuaternionToAxisAngle(transform.rotation);
+            return MyQuaternion.QuaternionToAxisAngle(transform.rotation);
         }
     }
 }

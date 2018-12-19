@@ -6,54 +6,20 @@ using System.Text;
 namespace Vortex
 {
     [System.Serializable]
-    internal struct PositionRotation
-    {
-        Vector3 position;
-        Quaternion rotation;
-
-        public PositionRotation(Vector3 position, Quaternion rotation)
-        {
-            this.position = position;
-            this.rotation = rotation;
-        }
-
-        public Vector3 GetPosition()
-        {
-            return position;
-        }
-
-        public Quaternion GetRotation()
-        {
-            return rotation;
-        }
-
-        // PositionRotation to Vector3
-        public static implicit operator Vector3(PositionRotation pr)
-        {
-            return pr.position;
-        }
-        // PositionRotation to Quaternion
-        public static implicit operator Quaternion(PositionRotation pr)
-        {
-            return pr.rotation;
-        }
-    }
-
-    [System.Serializable]
     public class Transform
     {
         public Vector3 position;
-        public Vector3 eulerAngles;// { get { return rotation.e} }
-        internal Quaternion rotation;
+        //public Vector3 eulerAngles;// { get { return rotation.e} }
+        internal MyQuaternion rotation;
         public Transform transform { get { return this; } set { } }
 
 
         public Transform() {
             position = Vector3.Zero();
-            eulerAngles = Vector3.Zero();
-            rotation = new Quaternion();
+            //eulerAngles = Vector3.Zero();
+            rotation = new MyQuaternion();
         }
-        public Transform(Vector3 p, Vector3 r) { position = p; eulerAngles = r; }
+        public Transform(Vector3 p, Vector3 r) { position = p; /*eulerAngles = r;*/ }
     }
 
     [System.Serializable]
@@ -61,7 +27,7 @@ namespace Vortex
     {
         // Properties:
         public float x, y, z;
-
+        public Vector3 Normalized { get { return Normalize(this); } }
         // Functions:
         public Vector3(float _x, float _y, float _z) { x = _x; y = _y; z = _z; }
         public Vector3() { }
@@ -77,7 +43,12 @@ namespace Vortex
             return v;
         }
 
-        Vector3 Normalize(Vector3 _v)
+        public static Vector3 operator /(Vector3 v1, float f)
+        {
+            return new Vector3(v1.x / f, v1.y / f, v1.z / f);
+        }
+
+        public static Vector3 Normalize(Vector3 _v)
         {
             float mod = (float)System.Math.Sqrt(System.Math.Pow(_v.x, 2) + System.Math.Pow(_v.y, 2) + System.Math.Pow(_v.z, 2));
             _v.x /= mod;
@@ -86,10 +57,23 @@ namespace Vortex
             return _v;
         }
 
-        public Vector3 Normalized() { return Normalize(this); }
+        public static Vector3 Cross(Vector3 v1, Vector3 v2)
+        {
+            return new Vector3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
+        }
+
+        public static float Dot(Vector3 v1, Vector3 v2)
+        {
+            return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
+        }
 
         public static Vector3 Zero() { return new Vector3(0); }
         public static Vector3 One() { return new Vector3(1); }
+
+        public static float Magnitude(Vector3 v)
+        {
+            return (float)Math.Sqrt(Math.Pow(v.x, 2) + Math.Pow(v.y, 2) + Math.Pow(v.z, 2));
+        }
     }
 
     [System.Serializable]
@@ -112,17 +96,18 @@ namespace Vortex
     }
 
     [System.Serializable]
-    internal class Quaternion
+    internal class MyQuaternion
     {
         // Properties:
         private float w, x, y, z;
+        public MyQuaternion Normalized { get { return Normalize(this); } }
 
         // Functions:
-        public Quaternion() { w = 1; x = 0; y = 0; z = 0; }
-        public Quaternion(float _w, float _x, float _y, float _z) { w = _w; x = _x; y = _y; z = _z; }
-        ~Quaternion() { }
+        public MyQuaternion() { w = 1; x = 0; y = 0; z = 0; }
+        public MyQuaternion(float _w, float _x, float _y, float _z) { w = _w; x = _x; y = _y; z = _z; }
+        ~MyQuaternion() { }
 
-        public static Quaternion Normalize(Quaternion _q)
+        public static MyQuaternion Normalize(MyQuaternion _q)
         {
             float magnitude = (float)System.Math.Sqrt(System.Math.Pow(_q.x, 2) + System.Math.Pow(_q.y, 2) + System.Math.Pow(_q.z, 2));
             _q.w /= magnitude;
@@ -132,14 +117,9 @@ namespace Vortex
             return _q;
         }
 
-        public Quaternion Normalized()
+        public static MyQuaternion operator +(MyQuaternion _q1, MyQuaternion _q2)
         {
-            return Normalize(this);
-        }
-
-        public static Quaternion operator +(Quaternion _q1, Quaternion _q2)
-        {
-            Quaternion _res = new Quaternion();
+            MyQuaternion _res = new MyQuaternion();
             _res.w = _q1.w + _q2.w;
             _res.x = _q1.x + _q2.x;
             _res.y = _q1.y + _q2.y;
@@ -148,9 +128,9 @@ namespace Vortex
             return _res;
         }
 
-        public static Quaternion operator *(Quaternion _q1, Quaternion _q2)
+        public static MyQuaternion operator *(MyQuaternion _q1, MyQuaternion _q2)
         {
-            Quaternion _res = new Quaternion();
+            MyQuaternion _res = new MyQuaternion();
             _res.w = _q1.w * _q2.w - _q1.x * _q2.x - _q1.y * _q2.y - _q1.z * _q2.z;
             _res.x = _q1.w * _q2.x + _q1.x * _q2.w + _q1.y * _q2.z - _q1.z * _q2.y;
             _res.y = _q1.w * _q2.y + _q1.y * _q2.w - _q1.x * _q2.z + _q1.z * _q2.x;
@@ -158,7 +138,7 @@ namespace Vortex
             return Normalize(_res);
         }
 
-        public static Vector3 operator *(Quaternion quat, Vector3 vec)
+        public static Vector3 operator *(MyQuaternion quat, Vector3 vec)
         {
             float num = quat.x * 2f;
             float num2 = quat.y * 2f;
@@ -179,7 +159,7 @@ namespace Vortex
             return result;
         }
 
-        public static Quaternion Inverse(Quaternion _q)
+        public static MyQuaternion Inverse(MyQuaternion _q)
         {
             _q = Normalize(_q);
             _q.x *= -1;
@@ -189,10 +169,10 @@ namespace Vortex
             return _q;
         }
 
-        public static Quaternion AxisAngleToQuaternion(Vector3 _axis, float _angle)
+        public static MyQuaternion AxisAngleToQuaternion(Vector3 _axis, float _angle)
         {
-            _axis = _axis.Normalized();
-            Quaternion _q = new Quaternion
+            _axis = _axis.Normalized;
+            MyQuaternion _q = new MyQuaternion
             {
                 x = (float)(_axis.x * System.Math.Sin(_angle / 2)),
                 y = (float)(_axis.y * System.Math.Sin(_angle / 2)),
@@ -202,12 +182,12 @@ namespace Vortex
             return _q;
         }
 
-        public static Quaternion AxisAngleToQuaternion(AxisAngle _axisAngle)
+        public static MyQuaternion AxisAngleToQuaternion(AxisAngle _axisAngle)
         {
             return AxisAngleToQuaternion(new Vector3(_axisAngle.x, _axisAngle.y, _axisAngle.z), _axisAngle.angle);
         }
 
-        public static AxisAngle QuaternionToAxisAngle(Quaternion _q)
+        public static AxisAngle QuaternionToAxisAngle(MyQuaternion _q)
         {
             AxisAngle _axAng = new AxisAngle
             {
