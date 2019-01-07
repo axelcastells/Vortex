@@ -43,6 +43,15 @@ namespace Vortex
             return v;
         }
 
+        public static Vector3 operator -(Vector3 v1, Vector3 v2)
+        {
+            Vector3 v = new Vector3();
+            v.x = v1.x - v2.x;
+            v.y = v1.y - v2.y;
+            v.z = v1.z - v2.z;
+            return v;
+        }
+
         public static Vector3 operator /(Vector3 v1, float f)
         {
             return new Vector3(v1.x / f, v1.y / f, v1.z / f);
@@ -73,6 +82,11 @@ namespace Vortex
         public static float Magnitude(Vector3 v)
         {
             return (float)Math.Sqrt(Math.Pow(v.x, 2) + Math.Pow(v.y, 2) + Math.Pow(v.z, 2));
+        }
+
+        public static float Distance(Vector3 v1, Vector3 v2)
+        {
+            return Magnitude(v1 - v2);
         }
     }
 

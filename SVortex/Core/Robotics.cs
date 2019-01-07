@@ -44,7 +44,7 @@ namespace Vortex.Physics
                 ApproachTarget(target);
         }
 
-        public void ApproachTarget(Vector3 target)
+        private void ApproachTarget(Vector3 target)
         {
 
             //TODO
@@ -61,7 +61,7 @@ namespace Vortex.Physics
 
         }
 
-        public float CalculateGradient(Vector3 target, float[] Solution, int i, float delta)
+        private float CalculateGradient(Vector3 target, float[] Solution, int i, float delta)
         {
             //TODO 
             float aux = Solution[i];
@@ -77,13 +77,13 @@ namespace Vortex.Physics
             return gradient;
         }
 
-        public float DistanceFromTarget(Vector3 target, float[] Solution)
+        private float DistanceFromTarget(Vector3 target, float[] Solution)
         {
             Vector3 point = ForwardKinematics(Solution);
             return Vector3.Distance(point, target);
         }
 
-        internal PositionRotation ForwardKinematics(float[] Solution)
+        private PositionRotation ForwardKinematics(float[] Solution)
         {
             Vector3 prevPoint = Joints[0].transform.position;
 
