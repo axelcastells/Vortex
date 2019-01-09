@@ -140,11 +140,19 @@ namespace Vortex.Physics
 
     public class IKCCDController : KinematicsController
     {
+        public delegate void EndEvent();
+        public EndEvent OnEnded;
+
         private Transform target;
         public float DistanceThreshold
         {
             get { return DistanceThreshold; }
             set { DistanceThreshold = value; }
+        }
+
+        public void LinkData(ref Transform _target)
+        {
+            target = _target;
         }
 
         public override void Init()
@@ -154,15 +162,34 @@ namespace Vortex.Physics
 
         public override void Run()
         {
-            if (Vector3.Distance(Joints[0].transform.position, target.position) > DistanceThreshold)
-            for(int i = Joints.Count - 2; i > 0; i--)
+            if (Vector3.Distance(GetEffector().transform.position, target.position) > DistanceThreshold)
             {
+                for (int i = Joints.Count - 2; i > 0; i--)
+                {
                     float dot = Vector3.Dot(target.transform.position - Joints[i].transform.position, GetEffector().transform.position - Joints[i].transform.position);
                     Vector3 cross = Vector3.Cross(target.transform.position - Joints[i].transform.position, GetEffector().transform.position - Joints[i].transform.position);
                     cross.Normalize();
 
-                    Quaternion q = new Quaternion((float)Math.Cos(dot / 2), (float)Math.Sin(dot / 2) * cross.x, (float)Math.Sin(dot / 2) * cross.y, (float)Math.Sin(dot / 2) * cross.z);
+                    Quaternion q = new Quaternion((float)Math.Cos(dot / 2), 
+                                        (float)Math.Sin(dot / 2) * cross.x, 
+                                        (float)Math.Sin(dot / 2) * cross.y, 
+                                        (float)Math.Sin(dot / 2) * cross.z);
+
+                    Quaternion endQuat = Joints[i].transform.rotation;
+                    for(int j = i - 1; j > 0; j--)
+                    {
+                        endQuat *= Joints[j].transform.rotation;
+                    }
+                    endQuat *= q;
+
+                    Joints[i].transform.rotation = endQuat;
+                }
             }
+            else
+            {
+                OnEnded();
+            }
+
         }
 
         
