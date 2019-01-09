@@ -66,6 +66,11 @@ namespace Vortex
             return _v;
         }
 
+        public void Normalize()
+        {
+            Normalize(this);
+        }
+
         public static Vector3 Cross(Vector3 v1, Vector3 v2)
         {
             return new Vector3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
@@ -145,25 +150,25 @@ namespace Vortex
         public static Quaternion operator *(Quaternion _q1, Quaternion _q2)
         {
             Quaternion _res = new Quaternion();
-            _res.w = _q1.w * _q2.w - _q1.x * _q2.x - _q1.y * _q2.y - _q1.z * _q2.z;
-            _res.x = _q1.w * _q2.x + _q1.x * _q2.w + _q1.y * _q2.z - _q1.z * _q2.y;
-            _res.y = _q1.w * _q2.y + _q1.y * _q2.w - _q1.x * _q2.z + _q1.z * _q2.x;
-            _res.z = _q1.w * _q2.z + _q1.z * _q2.w + _q1.x * _q2.y - _q1.y * _q2.x;
+            _res.w = (_q1.w * _q2.w) - (_q1.x * _q2.x) - (_q1.y * _q2.y) - (_q1.z * _q2.z);
+            _res.x = (_q1.w * _q2.x) + (_q1.x * _q2.w) + (_q1.y * _q2.z) - (_q1.z * _q2.y);
+            _res.y = (_q1.w * _q2.y) + (_q1.y * _q2.w) - (_q1.x * _q2.z) + (_q1.z * _q2.x);
+            _res.z = (_q1.w * _q2.z) + (_q1.z * _q2.w) + (_q1.x * _q2.y) - (_q1.y * _q2.x);
             return Normalize(_res);
         }
 
         public static Vector3 operator *(Quaternion quat, Vector3 vec)
         {
-            float num = quat.x * 2f;
+            float num0 = quat.x * 2f;
             float num2 = quat.y * 2f;
             float num3 = quat.z * 2f;
-            float num4 = quat.x * num;
+            float num4 = quat.x * num0;
             float num5 = quat.y * num2;
             float num6 = quat.z * num3;
             float num7 = quat.x * num2;
             float num8 = quat.x * num3;
             float num9 = quat.y * num3;
-            float num10 = quat.w * num;
+            float num10 = quat.w * num0;
             float num11 = quat.w * num2;
             float num12 = quat.w * num3;
             Vector3 result = new Vector3();

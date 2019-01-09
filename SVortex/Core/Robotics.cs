@@ -5,27 +5,56 @@ using System.Text;
 
 namespace Vortex.Physics
 {
+
     public delegate float ErrorFunction(Vector3 target, float[] solution);
 
-    [System.Serializable]
-    public class IKCCDController : KinematicsController
+    public class IKGradientController : KinematicsController
     {
+        // The current angles
+        protected List<float> Solution = null;
+
         private Vector3 target;
         private Transform destination;
 
         private float distanceFromDestination;
         
-        private float deltaGradient = 0.1f;
-        private float learningRate = 0.1f;
-
-        private float stopThreshold = 0.1f;
-        private float slowdownThreshold = 0.25f;
+        public float DeltaGradient
+        {
+            get { return DeltaGradient; }
+            set { DeltaGradient = value; }
+        }
+        public float LearningRate
+        {
+            get { return LearningRate; }
+            set { LearningRate = value; }
+        }
+        public float StopThreshold
+        {
+            get { return StopThreshold; }
+            set { StopThreshold = value; }
+        }
+        public float SlowdownThreshold
+        {
+            get { return SlowdownThreshold; }
+            set { SlowdownThreshold = value; }
+        }
 
         private ErrorFunction errorFunction;
 
-        public void LinkData()
+        IKGradientController()
         {
+            LearningRate = 0.1f;
+            DeltaGradient = 0.1f;
+            StopThreshold = 0.1f;
+            SlowdownThreshold = 0.25f;
+        }
 
+        public void LinkData(ref List<RobotJoint> _joints, ref List<float> _solution, ref Transform _destination, ref Vector3 _target)
+        {
+            Joints = _joints;
+            Solution = _solution;
+            destination = _destination;
+            target = _target;
         }
 
         public override void Init()
@@ -40,7 +69,7 @@ namespace Vortex.Physics
             //TODO
 
 
-            if (errorFunction(target, Solution.ToArray()) > stopThreshold)
+            if (errorFunction(target, Solution.ToArray()) > StopThreshold)
                 ApproachTarget(target);
         }
 
@@ -50,8 +79,8 @@ namespace Vortex.Physics
             //TODO
             for (int i = 0; i < Joints.Count - 1; i++)
             {
-                float gradient = CalculateGradient(target, Solution.ToArray(), i, deltaGradient);
-                Solution[i] -= learningRate * gradient;
+                float gradient = CalculateGradient(target, Solution.ToArray(), i, DeltaGradient);
+                Solution[i] -= LearningRate * gradient;
             }
 
             for (int i = 0; i < Joints.Count - 1; i++)
@@ -109,8 +138,42 @@ namespace Vortex.Physics
         }
     }
 
+    public class IKCCDController : KinematicsController
+    {
+        private Transform target;
+        public float DistanceThreshold
+        {
+            get { return DistanceThreshold; }
+            set { DistanceThreshold = value; }
+        }
+
+        public override void Init()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Run()
+        {
+            if (Vector3.Distance(Joints[0].transform.position, target.position) > DistanceThreshold)
+            for(int i = Joints.Count - 2; i > 0; i--)
+            {
+                    float dot = Vector3.Dot(target.transform.position - Joints[i].transform.position, GetEffector().transform.position - Joints[i].transform.position);
+                    Vector3 cross = Vector3.Cross(target.transform.position - Joints[i].transform.position, GetEffector().transform.position - Joints[i].transform.position);
+                    cross.Normalize();
+
+                    Quaternion q = new Quaternion((float)Math.Cos(dot / 2), (float)Math.Sin(dot / 2) * cross.x, (float)Math.Sin(dot / 2) * cross.y, (float)Math.Sin(dot / 2) * cross.z);
+            }
+        }
+
+        
+
+    }
+
     public class FKController : KinematicsController
     {
+        // The current angles
+        protected List<float> Solution = null;
+
         #region Constructors
         public FKController() { }
         #endregion
@@ -156,8 +219,7 @@ namespace Vortex.Physics
         /// Joint index Count - 1 will always be the effector.
         /// </summary>
         protected List<RobotJoint> Joints = null;
-        // The current angles
-        protected List<float> Solution = null;
+        
 
         public KinematicsController()
         {
@@ -167,6 +229,15 @@ namespace Vortex.Physics
         public abstract void Init();
         public abstract void Run();
 
+        protected void LinkJoints(ref List<RobotJoint> _joints)
+        {
+            Joints = _joints;
+        }
+
+        protected RobotJoint GetEffector()
+        {
+            return Joints[Joints.Count - 1];
+        }
 
         protected static float ClampAngle(float angle, float minAngle, float maxAngle, float delta = 0)
         {
@@ -246,4 +317,5 @@ namespace Vortex.Physics
             return pr.rotation;
         }
     }
+
 }
