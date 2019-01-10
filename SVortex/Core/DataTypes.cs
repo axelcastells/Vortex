@@ -73,7 +73,9 @@ namespace Vortex
 
         public static Vector3 Cross(Vector3 v1, Vector3 v2)
         {
-            return new Vector3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
+            return new Vector3( v1.y * v2.z - v1.z * v2.y, 
+                                v1.z * v2.x - v1.x * v2.z, 
+                                v1.x * v2.y - v1.y * v2.x);
         }
 
         public static float Dot(Vector3 v1, Vector3 v2)
@@ -156,6 +158,11 @@ namespace Vortex
             _res.z = (_q1.w * _q2.z) + (_q1.z * _q2.w) + (_q1.x * _q2.y) - (_q1.y * _q2.x);
             return Normalize(_res);
         }
+        
+        // w = ww - xx - yy - zz
+        // x = wx + xw + yz - zy
+        // y = wy + yw - xz + zx
+        // z = wz + zw + xy - yx
 
         public static Vector3 operator *(Quaternion quat, Vector3 vec)
         {
