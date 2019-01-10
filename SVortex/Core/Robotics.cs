@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Vortex.Physics
+namespace Vortex.Physics.Kinematics
 {
 
     public delegate float ErrorFunction(Vector3 target, float[] solution);
@@ -194,6 +194,18 @@ namespace Vortex.Physics
 
         
 
+    }
+
+    public class FABRIKController : KinematicsController
+    {
+        public override void Init()
+        {
+            throw new NotImplementedException();
+        }
+        public override void Run()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class FKController : KinematicsController
