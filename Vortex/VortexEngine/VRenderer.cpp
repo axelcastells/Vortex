@@ -46,7 +46,7 @@ unsigned int VRenderer::GetShaderProgram(const char* name) {
 }
 
 Buffer* VRenderer::GetBufferData(const char* name) {
-	return buffers[name];
+	return &buffers[name];
 }
 
 bool VRenderer::WindowShouldClose() {
@@ -159,7 +159,7 @@ void VRenderer::BindAndSetBuffers(const char* bufferId, void* data) {
 	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	buffers.insert(std::pair<const char*, Buffer*>(bufferId, &buff));
+	buffers.insert(std::pair<const char*, Buffer>(bufferId, buff));
 }
 
 void Vortex::Graphics::FramebufferSizeCallback(GLFWwindow* window, int width, int height) {

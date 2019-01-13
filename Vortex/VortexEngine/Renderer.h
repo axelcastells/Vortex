@@ -50,7 +50,7 @@ namespace Vortex
 
 			GLFWwindow* window;
 
-			std::map<const char*, Buffer*> buffers;
+			std::map<const char*, Buffer> buffers;
 			std::list<unsigned int> compiledShaders;
 			std::map<const char*, unsigned int> shaderPrograms;
 			

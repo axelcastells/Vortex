@@ -26,9 +26,12 @@
     <ClCompile Include="glad.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Component.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="DataTypes.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="MemoryAllocator.h" />
     <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
