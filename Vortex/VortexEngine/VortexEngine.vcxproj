@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="Math.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="VInput.cpp" />
     <ClCompile Include="VRenderer.cpp" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="DataManager.h" />
+    <ClInclude Include="Math.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Input.h" />

@@ -10,5 +10,9 @@ namespace Vortex {
 		Vector(float _x, float _y, float _z);
 		~Vector();
 
+		float Normalized();
+		void Normalize();
+		static Vector Normalize(Vector v);
+
 	};
 }
