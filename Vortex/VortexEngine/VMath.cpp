@@ -1,4 +1,4 @@
-#include "Math.h"
+#include "VMath.h"
 #include <math.h>
 
 double Vortex::Math::Sqrt(double val)
