@@ -91,6 +91,11 @@ namespace Vortex
             return (float)Math.Sqrt(Math.Pow(v.x, 2) + Math.Pow(v.y, 2) + Math.Pow(v.z, 2));
         }
 
+        public float Magnitude()
+        {
+            return Magnitude(this);
+        }
+
         public static float Distance(Vector3 v1, Vector3 v2)
         {
             return Magnitude(v1 - v2);

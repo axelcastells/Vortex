@@ -143,16 +143,17 @@ namespace Vortex.Physics.Kinematics
         public delegate void EndEvent();
         public EndEvent OnEnded;
 
-        private Transform target;
-        public float DistanceThreshold
+        private Vector3 target;
+        public float distanceThreshold;
+
+        public IKCCDController()
         {
-            get { return DistanceThreshold; }
-            set { DistanceThreshold = value; }
+            distanceThreshold = 0.1f;
         }
 
-        public void LinkData(ref Transform _target)
+        public void SetTarget(float _x, float _y, float _z)
         {
-            target = _target;
+            target = new Vector3(_x, _y, _z);
         }
 
         public override void Init()
@@ -160,35 +161,72 @@ namespace Vortex.Physics.Kinematics
             throw new NotImplementedException();
         }
 
+        double SimpleAngle(double theta)
+        {
+            theta = theta % (2.0 * Math.PI);
+            if (theta < -Math.PI)
+                theta += 2.0 * Math.PI;
+            else if (theta > Math.PI)
+                theta -= 2.0 * Math.PI;
+            return theta;
+        }
+
         public override void Run()
         {
-            if (Vector3.Distance(GetEffector().transform.position, target.position) > DistanceThreshold)
+
+            if (Vector3.Distance(GetEffector().transform.position, target) > distanceThreshold)
             {
                 for (int i = Joints.Count - 2; i > 0; i--)
                 {
-                    float dot = Vector3.Dot(target.transform.position - Joints[i].transform.position, GetEffector().transform.position - Joints[i].transform.position);
-                    Vector3 cross = Vector3.Cross(target.transform.position - Joints[i].transform.position, GetEffector().transform.position - Joints[i].transform.position);
-                    cross.Normalize();
+                    Vector3 v1 = GetEffector().transform.position - Joints[i].transform.position;
+                    Vector3 v2 = target - Joints[i].transform.position;
 
-                    Quaternion q = new Quaternion((float)Math.Cos(dot / 2), 
-                                        (float)Math.Sin(dot / 2) * cross.x, 
-                                        (float)Math.Sin(dot / 2) * cross.y, 
-                                        (float)Math.Sin(dot / 2) * cross.z);
 
-                    Quaternion endQuat = Joints[i].transform.rotation;
-                    for(int j = i - 1; j > 0; j--)
+                    float cos, sin;
+                    if(v1.Magnitude() * v2.Magnitude() <= 0.001f)
                     {
-                        endQuat *= Joints[j].transform.rotation;
-                    }
-                    endQuat *= q;
+                        cos = 1;
+                        sin = 0;
 
-                    Joints[i].transform.rotation = endQuat;
+                    }
+                    else{
+                        cos = Vector3.Dot(v1, v2) / (v1.Magnitude() * v2.Magnitude());
+                        sin = Vector3.Cross(v1, v2).Magnitude() / (v1.Magnitude() * v2.Magnitude());
+                    }
+
+                    Vector3 axis = Vector3.Cross(v1, v2) / (v1.Magnitude() * v2.Magnitude());
+
+                    float angle = (float)Math.Acos(Math.Max(-1, Math.Min(1, cos)));
+
+                    if(sin < 0)
+                    {
+                        angle = -angle;
+                    }
+
+                    angle = (float)SimpleAngle(angle) * VMath.Rad2Deg;
+
+                    
+                    Quaternion q = Quaternion.AxisAngleToQuaternion(axis, angle);
+
+                    //Quaternion endQuat = Joints[i].transform.rotation;
+                    //for (int j = i - 1; j > 0; j--)
+                    //{
+                    //    endQuat *= Joints[j].transform.rotation;
+                    //}
+                    //endQuat *= q;
+
+                    Joints[i].transform.rotation = q;
+                    Joints[i].ConstraintAngle(0, 1);
                 }
             }
             else
             {
                 OnEnded();
             }
+
+            float x = Math.Abs(Joints[Joints.Count - 1].transform.position.x - target.x);
+            float y = Math.Abs(Joints[Joints.Count - 1].transform.position.y - target.y);
+            float z = Math.Abs(Joints[Joints.Count - 1].transform.position.z - target.z);
 
         }
 
@@ -268,7 +306,7 @@ namespace Vortex.Physics.Kinematics
         public abstract void Init();
         public abstract void Run();
 
-        protected void LinkJoints(ref List<RobotJoint> _joints)
+        public void LinkJoints(ref List<RobotJoint> _joints)
         {
             Joints = _joints;
         }
@@ -317,6 +355,13 @@ namespace Vortex.Physics.Kinematics
             transform = new Transform();
             axis = new Vector3(_axisX, _axisY, _axisZ);
         }
+
+        public RobotJoint(float _posX, float _posY, float _posZ, float _rotW, float _rotX, float _rotY, float _rotZ)
+        {
+            transform = new Transform();
+            transform.position = new Vector3(_posX, _posY, _posZ);
+            transform.rotation = new Quaternion(_rotW, _rotX, _rotY, _rotZ);
+        }
         
         public void SetAxis(float _x, float _y, float _z)
         {
@@ -326,6 +371,31 @@ namespace Vortex.Physics.Kinematics
         public Vector3 GetAxis()
         {
             return axis;
+        }
+
+
+        /// <summary>
+        /// Min and Max must be between 0 and 360
+        /// </summary>
+        /// <param name="_min"></param>
+        /// <param name="_max"></param>
+        public void ConstraintAngle(float _min, float _max)
+        {
+            AxisAngle res = Quaternion.QuaternionToAxisAngle(transform.rotation);
+            res.angle = VMath.Clamp(res.angle, _min * VMath.Rad2Deg, _max * VMath.Rad2Deg);
+            transform.rotation = Quaternion.AxisAngleToQuaternion(res);
+        }
+
+        public void ConstraintAxis()
+        {
+
+        }
+
+        public void SetPosition(float _x, float _y, float _z)
+        {
+            transform.position.x = _x;
+            transform.position.y = _y;
+            transform.position.z = _z;
         }
 
         public AxisAngle GetAxisAngle()
@@ -354,6 +424,141 @@ namespace Vortex.Physics.Kinematics
         public static implicit operator Quaternion(PositionRotation pr)
         {
             return pr.rotation;
+        }
+    }
+
+    public class IKCCDSolver
+    {
+
+        // Array to hold all the joints
+        // index 0 - root
+        // index END - End Effector
+        public List<Transform> joints;
+        // The target for the IK system
+        public Vector3 targ;
+
+        // The sine component for each joint
+
+        private float[] _sin, _cos, _theta;
+
+
+        // To check if the target is reached at any point
+        public bool done = false;
+        // To store the position of the target
+        private Vector3 tpos;
+
+        // Max number of tries before the system gives up (Maybe 10 is too high?)
+        private int Mtries = 10;
+        // The number of tries the system is at now
+        private int tries = 0;
+
+        // the range within which the target will be assumed to be reached
+        private float epsilon = 0.1f;
+
+
+
+
+        // Initializing the variables
+        public void Start()
+        {
+            _theta = new float[joints.Count];
+            _sin = new float[joints.Count];
+            _cos = new float[joints.Count];
+            tpos = targ;
+        }
+
+        // Running the solver - all the joints are iterated through once every frame
+        public void Update()
+        {
+            // if the target hasn't been reached
+            if (!done)
+            {
+                // if the Max number of tries hasn't been reached
+                if (tries <= Mtries)
+                {
+                    // starting from the second last joint (the last being the end effector)
+                    // going back up to the root
+                    for (int i = joints.Count - 2; i >= 0; i--)
+                    {
+                        // The vector from the ith joint to the end effector
+                        Vector3 r1 = joints[joints.Count - 1].transform.position - joints[i].transform.position;
+                        // The vector from the ith joint to the target
+                        Vector3 r2 = targ - joints[i].transform.position;
+
+                        // to avoid dividing by tiny numbers
+                        if (r1.Magnitude() * r2.Magnitude() <= 0.001f)
+                        {
+                            // cos component will be 1 and sin will be 0
+                            _cos[i] = 1;
+                            _sin[i] = 0;
+                        }
+                        else
+                        {
+                            // find the components using dot and cross product
+                            _cos[i] = Vector3.Dot(r1, r2) / (r1.Magnitude() * r2.Magnitude());
+                            _sin[i] = (Vector3.Cross(r1, r2)).Magnitude() / (r1.Magnitude() * r2.Magnitude());
+
+                        }
+
+                        // The axis of rotation is basically the 
+                        // unit vector along the cross product 
+                        Vector3 axis = (Vector3.Cross(r1, r2)) / (r1.Magnitude() * r2.Magnitude());
+
+                        // find the angle between r1 and r2 (and clamp values of cos to avoid errors)
+                        _theta[i] = (float)Math.Acos(Math.Max(-1, Math.Min(1, _cos[i])));
+                        // invert angle if sin component is negative
+                        if (_sin[i] < 0.0f)
+                            _theta[i] = -_theta[i];
+                        // obtain an angle value between -pi and pi, and then convert to degrees
+                        _theta[i] = (float)SimpleAngle(_theta[i]) * VMath.Rad2Deg;
+                        // rotate the ith joint along the axis by theta degrees in the world space.
+                        joints[i].transform.rotation = Quaternion.AxisAngleToQuaternion(axis, _theta[i]);
+
+                    }
+
+                    // increment tries
+                    tries++;
+                }
+            }
+
+            // find the difference in the positions of the end effector and the target
+            // (there's obviously a more beautiful and DRY way to do this)
+            float x = Math.Abs(joints[joints.Count - 1].transform.position.x - targ.x);
+            float y = Math.Abs(joints[joints.Count - 1].transform.position.y - targ.y);
+            float z = Math.Abs(joints[joints.Count - 1].transform.position.z - targ.z);
+
+            // if target is within reach (within epsilon) then the process is done
+            if (x < epsilon && y < epsilon && z < epsilon)
+            {
+                done = true;
+            }
+            // if it isn't, then the process should be repeated
+            else
+            {
+                done = false;
+            }
+
+            // the target has moved, reset tries to 0 and change tpos
+            if (targ != tpos)
+            {
+                tries = 0;
+                tpos = targ;
+            }
+
+
+
+
+        }
+
+        // function to convert an angle to its simplest form (between -pi to pi radians)
+        double SimpleAngle(double theta)
+        {
+            theta = theta % (2.0 * Math.PI);
+            if (theta < -Math.PI)
+                theta += 2.0 * Math.PI;
+            else if (theta > Math.PI)
+                theta -= 2.0 * Math.PI;
+            return theta;
         }
     }
 
