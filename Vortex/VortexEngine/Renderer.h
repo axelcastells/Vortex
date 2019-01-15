@@ -2,7 +2,7 @@
 #include <string>
 #include <map>
 #include <list>
-#include "DataTypes.h"
+#include "Vector.h"
 
 typedef struct GLFWwindow;
 typedef unsigned int GLuint;
@@ -10,7 +10,10 @@ typedef unsigned int GLuint;
 namespace Vortex
 {
 	namespace Graphics {
-
+		typedef enum ShaderType { VERTEX, FRAGMENT, GEOMETRY };
+		struct Buffer {
+			unsigned int VAO, VBO;
+		};
 #define VR VRenderer::Instance()
 
 		class VRenderer
