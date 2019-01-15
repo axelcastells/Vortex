@@ -20,6 +20,16 @@ namespace Vortex
             rotation = new Quaternion();
         }
         public Transform(Vector3 p, Vector3 r) { position = p; /*eulerAngles = r;*/ }
+
+        public AxisAngle GetRotation()
+        {
+            return Quaternion.QuaternionToAxisAngle(rotation);
+        }
+
+        public void SetRotation(AxisAngle rot)
+        {
+            rotation = Quaternion.AxisAngleToQuaternion(rot);
+        }
     }
 
     [System.Serializable]

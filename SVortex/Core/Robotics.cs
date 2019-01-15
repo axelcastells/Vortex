@@ -216,7 +216,7 @@ namespace Vortex.Physics.Kinematics
                     //endQuat *= q;
 
                     Joints[i].transform.rotation = q;
-                    Joints[i].ConstraintAngle(0, 1);
+                    Joints[i].ConstraintAngle(-10, 10);
                 }
             }
             else
@@ -382,7 +382,7 @@ namespace Vortex.Physics.Kinematics
         public void ConstraintAngle(float _min, float _max)
         {
             AxisAngle res = Quaternion.QuaternionToAxisAngle(transform.rotation);
-            res.angle = VMath.Clamp(res.angle, _min * VMath.Rad2Deg, _max * VMath.Rad2Deg);
+            res.angle = VMath.Clamp(res.angle, _min, _max);
             transform.rotation = Quaternion.AxisAngleToQuaternion(res);
         }
 
@@ -512,8 +512,8 @@ namespace Vortex.Physics.Kinematics
                         // obtain an angle value between -pi and pi, and then convert to degrees
                         _theta[i] = (float)SimpleAngle(_theta[i]) * VMath.Rad2Deg;
                         // rotate the ith joint along the axis by theta degrees in the world space.
+                        //joints[i].transform.rotation = Quaternion.AxisAngleToQuaternion(axis, _theta[i]);
                         joints[i].transform.rotation = Quaternion.AxisAngleToQuaternion(axis, _theta[i]);
-
                     }
 
                     // increment tries
