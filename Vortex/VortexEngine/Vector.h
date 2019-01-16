@@ -8,7 +8,7 @@ namespace Vortex {
 
 #pragma region Constructors & Destructor
 		Vector();
-		Vector(float _allValues);
+		Vector(float _xyz);
 		Vector(float _x, float _y, float _z);
 		~Vector();
 #pragma endregion

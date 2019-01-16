@@ -4,11 +4,11 @@
 using namespace Vortex;
 
 Vector::Vector() {
-
+	x = y = z = 0;
 }
 
-Vector::Vector(float _allValues) {
-	x = y = z = _allValues;
+Vector::Vector(float _xyz) {
+	x = y = z = _xyz;
 }
 
 Vector::Vector(float _x, float _y, float _z) {
