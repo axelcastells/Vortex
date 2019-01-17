@@ -9,39 +9,45 @@ using namespace Input;
 int main()
 {
 	const char* buff = "mainBuffer";
+	const char* prog = "mainProgram";
 
-	VR->Init(800, 900, "VortexEngine - Game Window");
+	VR->Init(500, 500, "VortexEngine - Game Window");
 	//VR->Run();
 
+	float vertices[] = {
+	 0.5f,  0.5f, 0.0f,  // top right
+	 0.5f, -0.5f, 0.0f,  // bottom right
+	-0.5f, -0.5f, 0.0f,  // bottom left
+	-0.5f,  0.5f, 0.0f   // top left 
+	};
+	unsigned int indices[] = {  // note that we start from 0!
+		0, 1, 3,   // first triangle
+		1, 2, 3    // second triangle
+	};
+
+	float *vptr;
+	vptr = vertices;
 	
 	VR->CompileShader(ShaderType::VERTEX, ".\\vertexshader");
 	VR->CompileShader(ShaderType::FRAGMENT, ".\\fragmentshader");
 
-	VR->SetupShaderProgram("mainProgram");
+	VR->CreateShaderProgram(prog);
 
-	float vertices[] = {
-	-0.5f, -0.5f, 0.0f,	// left
-	 0.5f, -0.5f, 0.0f,	// right
-	 0.0f,  0.5f, 0.0f	// up
-	};
-	VR->BindAndSetBuffers(buff, vertices);
+	VR->BindAndSetBuffers(buff, vertices, 12, indices, 6);
 
 	while (!VR->WindowShouldClose()) {
 		VI->ProcessInput(VR->GetWindow());
 
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 
-		VR->UseShaderProgram("mainProgram");
-
-		DrawTriangle(VR->GetBufferData(buff), vertices);
+		VR->UseShaderProgram(prog);
+		DrawTriangle(VR->GetBufferData(buff));
 		
 		VR->SwapBuffers();
 		VI->PollEvents();
 	}
 
 	VR->Terminate();
-	
-	system("pause");
 }
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
 // Depurar programa: F5 o menú Depurar > Iniciar depuración

@@ -12,7 +12,7 @@ namespace Vortex
 	namespace Graphics {
 		typedef enum ShaderType { VERTEX, FRAGMENT, GEOMETRY };
 		struct Buffer {
-			unsigned int VAO, VBO;
+			unsigned int VAO, VBO, EBO;
 		};
 #define VR VRenderer::Instance()
 
@@ -29,7 +29,6 @@ namespace Vortex
 			}
 
 			void Init(int w, int h, const char* windowTitle);
-			void Run();
 			void Terminate();
 
 			bool WindowShouldClose();
@@ -39,14 +38,14 @@ namespace Vortex
 			GLFWwindow* GetWindow();
 
 			void CompileShader(ShaderType shaderMode, const char *shaderPath);
-			void SetupShaderProgram(const char* newProgramName);
+			void CreateShaderProgram(const char* newProgramName);
 			void UseShaderProgram(const char* programName);
 
 			unsigned int GetShaderProgram(const char* name);
 			Buffer* GetBufferData(const char* name);
 
 			//template<typename T>
-			void BindAndSetBuffers(const char* bufferId, void* data);
+			void BindAndSetBuffers(const char* bufferId, void* vertices, int verticesArrayCount, void* indices, int indicesArrayCount);
 
 		private:
 			VRenderer();
@@ -60,7 +59,7 @@ namespace Vortex
 		};
 
 		
-		void DrawTriangle(Buffer* buff, void* vertexArray);
+		void DrawTriangle(Buffer* buff);
 
 		void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	}	

@@ -17,7 +17,7 @@ Vector::Vector(float _x, float _y, float _z) {
 	z = _z;
 }
 Vector::~Vector() {
-
+	
 }
 
 void Vortex::Vector::Normalize()
@@ -86,5 +86,3 @@ float Vortex::Vector::Magnitude()
 {
 	return Magnitude(*this);
 }
-
-
