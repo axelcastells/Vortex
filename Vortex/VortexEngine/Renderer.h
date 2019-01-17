@@ -59,7 +59,7 @@ namespace Vortex
 		};
 
 		
-		void DrawTriangle(Buffer* buff);
+		void DrawElements(Buffer* buff);
 
 		void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	}	

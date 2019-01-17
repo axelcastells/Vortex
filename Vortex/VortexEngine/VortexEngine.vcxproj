@@ -36,6 +36,10 @@
     <ClInclude Include="MemoryAllocator.h" />
     <ClInclude Include="Renderer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="fragmentshader" />
+    <None Include="vertexshader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{FEFBA053-AF18-42DC-B5C3-06CAF558BE68}</ProjectGuid>

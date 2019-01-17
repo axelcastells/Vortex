@@ -68,7 +68,7 @@ void VRenderer::Terminate() {
 	glfwTerminate();
 }
 
-void Vortex::Graphics::DrawTriangle(Buffer* buff) {
+void Vortex::Graphics::DrawElements(Buffer* buff) {
 	
 	glBindVertexArray(buff->VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buff->EBO);

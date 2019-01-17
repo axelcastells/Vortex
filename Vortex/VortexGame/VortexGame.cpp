@@ -41,7 +41,7 @@ int main()
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 
 		VR->UseShaderProgram(prog);
-		DrawTriangle(VR->GetBufferData(buff));
+		DrawElements(VR->GetBufferData(buff));
 		
 		VR->SwapBuffers();
 		VI->PollEvents();
