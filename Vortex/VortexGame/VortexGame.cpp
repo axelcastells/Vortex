@@ -28,10 +28,7 @@ int main()
 	float *vptr;
 	vptr = vertices;
 	
-	VR->CompileShader(ShaderType::VERTEX, ".\\vertexshader");
-	VR->CompileShader(ShaderType::FRAGMENT, ".\\fragmentshader");
-
-	VR->CreateShaderProgram(prog);
+	VR->CreateShader(prog, ".\\vertexShader", ".\\fragmentShader");
 
 	VR->BindAndSetBuffers(buff, vertices, 12, indices, 6);
 
@@ -40,8 +37,8 @@ int main()
 
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 
-		VR->UseShaderProgram(prog);
-		DrawElements(VR->GetBufferData(buff));
+		VR->GetShader(prog)->Use();
+		DrawElements(VR->GetBuffer(buff));
 		
 		VR->SwapBuffers();
 		VI->PollEvents();

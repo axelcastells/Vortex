@@ -2,7 +2,7 @@
 
 using namespace DataManager;
 
-std::string FileManager::ReadFile(const char* filePath) {
+const char *FileManager::ReadFile(const char* filePath) {
 	std::string content;
 	std::ifstream fileStream(filePath, std::ios::in);
 

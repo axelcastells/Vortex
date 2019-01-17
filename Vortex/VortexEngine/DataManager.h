@@ -6,6 +6,6 @@
 namespace DataManager {
 	static class FileManager {
 	public:
-		static std::string ReadFile(const char* filePath);
+		static const char* ReadFile(const char* filePath);
 	};	
 }
