@@ -15,33 +15,30 @@ int main()
 	//VR->Run();
 
 	float vertices[] = {
-	 0.5f,  0.5f, 0.0f,  // top right
-	 0.5f, -0.5f, 0.0f,  // bottom right
-	-0.5f, -0.5f, 0.0f,  // bottom left
-	-0.5f,  0.5f, 0.0f   // top left 
+		// positions         // colors
+		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+		 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
 	};
 	unsigned int indices[] = {  // note that we start from 0!
-		0, 1, 3,   // first triangle
-		1, 2, 3    // second triangle
+		0, 1, 2,   // first triangle
+		//1, 2, 0    // second triangle
 	};
 
 	float *vptr;
 	vptr = vertices;
 	
-	VR->CompileShader(ShaderType::VERTEX, ".\\vertexshader");
-	VR->CompileShader(ShaderType::FRAGMENT, ".\\fragmentshader");
+	VR->CreateShader(prog, ".\\vertexShader", ".\\fragmentShader");
 
-	VR->CreateShaderProgram(prog);
-
-	VR->BindAndSetBuffers(buff, vertices, 12, indices, 6);
+	VR->BindAndSetBuffers(buff, vertices, 18, indices, 6);
 
 	while (!VR->WindowShouldClose()) {
 		VI->ProcessInput(VR->GetWindow());
 
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 
-		VR->UseShaderProgram(prog);
-		DrawTriangle(VR->GetBufferData(buff));
+		VR->GetShader(prog)->Use();
+		DrawElements(VR->GetBuffer(buff));
 		
 		VR->SwapBuffers();
 		VI->PollEvents();

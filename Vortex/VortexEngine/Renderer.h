@@ -3,6 +3,7 @@
 #include <map>
 #include <list>
 #include "Vector.h"
+#include "Shader.h"
 
 typedef struct GLFWwindow;
 typedef unsigned int GLuint;
@@ -37,12 +38,9 @@ namespace Vortex
 
 			GLFWwindow* GetWindow();
 
-			void CompileShader(ShaderType shaderMode, const char *shaderPath);
-			void CreateShaderProgram(const char* newProgramName);
-			void UseShaderProgram(const char* programName);
-
-			unsigned int GetShaderProgram(const char* name);
-			Buffer* GetBufferData(const char* name);
+			void CreateShader(const char *nameId, const char *vertexPath, const char *fragmentPath);
+			Shader *GetShader(const char *name);
+			Buffer *GetBuffer(const char* name);
 
 			//template<typename T>
 			void BindAndSetBuffers(const char* bufferId, void* vertices, int verticesArrayCount, void* indices, int indicesArrayCount);
@@ -53,13 +51,12 @@ namespace Vortex
 			GLFWwindow* window;
 
 			std::map<const char*, Buffer> buffers;
-			std::list<unsigned int> compiledShaders;
-			std::map<const char*, unsigned int> shaderPrograms;
+			std::map<const char*, Shader> shaders;
 			
 		};
 
 		
-		void DrawTriangle(Buffer* buff);
+		void DrawElements(Buffer* buff);
 
 		void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	}	

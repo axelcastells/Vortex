@@ -41,11 +41,18 @@ void VRenderer::Init(int w, int h, const char* windowTitle) {
 	}
 }
 
-unsigned int VRenderer::GetShaderProgram(const char* name) {
-	return shaderPrograms[name];
+void Vortex::Graphics::VRenderer::CreateShader(const char * nameId, const char * vertexPath, const char * fragmentPath)
+{
+	shaders.insert(std::pair<const char*, Shader>(nameId, Shader(vertexPath, fragmentPath)));
 }
 
-Buffer* VRenderer::GetBufferData(const char* name) {
+Shader *Vortex::Graphics::VRenderer::GetShader(const char *name)
+{
+	return &shaders[name];
+	// TODO: insertar una instrucción return aquí
+}
+
+Buffer* VRenderer::GetBuffer(const char* name) {
 	return &buffers[name];
 }
 
@@ -68,7 +75,7 @@ void VRenderer::Terminate() {
 	glfwTerminate();
 }
 
-void Vortex::Graphics::DrawTriangle(Buffer* buff) {
+void Vortex::Graphics::DrawElements(Buffer* buff) {
 	
 	glBindVertexArray(buff->VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buff->EBO);
@@ -95,8 +102,11 @@ void VRenderer::BindAndSetBuffers(const char* bufferId, void* vertices, int vert
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buff.EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices)*indicesArrayCount, indices, GL_STATIC_DRAW);
 	// 4. then set the vertex attributes pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	// Color attributes pointers
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -113,72 +123,8 @@ void Vortex::Graphics::FramebufferSizeCallback(GLFWwindow* window, int width, in
 	glViewport(0, 0, width, height);
 }
 
-void VRenderer::CompileShader(ShaderType shaderMode, const char *shaderPath) {
-	std::string str = DataManager::FileManager::ReadFile(shaderPath);
-	const char* shaderSrc = str.c_str();
-	
-	unsigned int shader;
-	switch (shaderMode)
-	{
-	case Vortex::Graphics::VERTEX: {
-		shader = glCreateShader(GL_VERTEX_SHADER);
-	}
-		break;
-	case Vortex::Graphics::FRAGMENT: {
-		shader = glCreateShader(GL_FRAGMENT_SHADER);
-	}
-		break;
-	case Vortex::Graphics::GEOMETRY: {
-		shader = glCreateShader(GL_GEOMETRY_SHADER);
-	}
-		break;
-	default:
-		break;
-	}	
-
-	glShaderSource(shader, 1, &shaderSrc, NULL);
-	glCompileShader(shader);
-
-	int success;
-	char infoLog[512];
-
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	if (!success) {
-		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	compiledShaders.push_back(shader);
-}
-
 // Creates and links the shader program using all compiled shaders in compiledShaders list
 // shaderNames is a pointer to char array
-void VRenderer::CreateShaderProgram(const char* newProgramName) {
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-
-	for (std::list<unsigned int>::iterator it = compiledShaders.begin(); it != compiledShaders.end(); it++)
-	{
-		glAttachShader(shaderProgram, *it);
-		glDeleteShader(*it);
-	}
-	glLinkProgram(shaderProgram);
-
-	int success;
-	char infoLog[512];
-
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-	}
-
-	compiledShaders.clear();
-	shaderPrograms.insert(std::pair<const char*, unsigned int>(newProgramName, shaderProgram));
-}
-
-void VRenderer::UseShaderProgram(const char* programName) {
-	glUseProgram(shaderPrograms[programName]);
-}
 
 void VRenderer::ClearScreen(float r, float g, float b, float a) {
 	glClearColor(r, g, b, a);

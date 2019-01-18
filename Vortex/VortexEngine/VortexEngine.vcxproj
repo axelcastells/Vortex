@@ -20,21 +20,27 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="VInput.cpp" />
-    <ClCompile Include="VRenderer.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="DataManager.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="VMath.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MemoryAllocator.h" />
     <ClInclude Include="Renderer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragmentshader" />
+    <None Include="vertexshader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
