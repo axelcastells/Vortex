@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include "DataManager.h"
+#include <iostream>
 
 Shader::Shader(const char * vertexPath, const char * fragmentPath)
 {
