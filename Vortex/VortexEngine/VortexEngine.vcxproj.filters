@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{9739a4fb-0664-45b1-a499-8db18c81397e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataManager.h">
@@ -42,6 +45,15 @@
     <ClInclude Include="Shader.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -65,9 +77,19 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragmentshader" />
-    <None Include="vertexshader" />
+    <None Include="shaders\fragmentshader">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\vertexshader">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

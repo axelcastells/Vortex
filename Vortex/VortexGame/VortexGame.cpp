@@ -29,7 +29,7 @@ int main()
 	vptr = vertices;
 	
 	VR->CreateShader(prog, ".\\vertexShader", ".\\fragmentShader");
-
+	Texture tex = Texture(".\\tex");
 	VR->BindAndSetBuffers(buff, vertices, 18, indices, 6);
 
 	while (!VR->WindowShouldClose()) {
@@ -38,7 +38,7 @@ int main()
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 
 		VR->GetShader(prog)->Use();
-		DrawElements(VR->GetBuffer(buff));
+		DrawElements(VR->GetBuffer(buff), tex);
 		
 		VR->SwapBuffers();
 		VI->PollEvents();
