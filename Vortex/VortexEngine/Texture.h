@@ -3,9 +3,9 @@
 
 class Texture {
 public:
+	Texture();
 	Texture(const char * filePath);
 	unsigned int GetID();
-
 
 private:
 	int width, height, nrChannels;

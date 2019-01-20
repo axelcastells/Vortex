@@ -5,7 +5,7 @@
 #include "Vector.h"
 #include "Shader.h"
 
-#include "Texture.h"
+#include "Material.h"
 
 typedef struct GLFWwindow;
 typedef unsigned int GLuint;
@@ -57,7 +57,7 @@ namespace Vortex
 		};
 
 		
-		void DrawElements(Buffer* buff, Texture& tex);
+		void DrawElements(Buffer* buff, Material* tex);
 
 		void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	}	

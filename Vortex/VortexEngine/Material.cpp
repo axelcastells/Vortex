@@ -1,13 +1,14 @@
 #include "Material.h"
 
-Material::Material(Shader _shader)
+Material::Material(Shader *_shader)
 {
-	SetShader(_shader);
+	shader = *_shader;
+	tex = Texture();
 }
 
-void Material::SetShader(Shader _shader)
+void Material::SetShader(Shader *_shader)
 {
-	shader = _shader;
+	shader = *_shader;
 }
 
 Shader & Material::GetShader()

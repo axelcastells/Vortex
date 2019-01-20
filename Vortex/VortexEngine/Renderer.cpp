@@ -75,11 +75,12 @@ void VEngine::Terminate() {
 	glfwTerminate();
 }
 
-void Vortex::Graphics::DrawElements(Buffer* buff, Texture& tex) {
-	
+void Vortex::Graphics::DrawElements(Buffer* buff, Material* mat) {
+	// TODO: Bind all textures in material
+	glBindTexture(GL_TEXTURE_2D, mat->tex.GetID());
+
 	glBindVertexArray(buff->VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buff->EBO);
-	glBindTexture(GL_TEXTURE_2D, tex.GetID());
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	//glDrawArrays(GL_TRIANGLES, 0, 3);

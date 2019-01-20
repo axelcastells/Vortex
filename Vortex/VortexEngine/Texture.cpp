@@ -2,6 +2,10 @@
 #include "stb_image.h"
 #include <glad\glad.h>
 
+Texture::Texture()
+{
+}
+
 Texture::Texture(const char * filePath)
 {
 	glGenTextures(1, &id);
