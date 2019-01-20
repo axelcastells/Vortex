@@ -1,4 +1,5 @@
 #pragma once
+#include "Transform.h"
 #include "Component.h"
 #include <list>
 
@@ -8,7 +9,10 @@ public:
 	Entity();
 	~Entity();
 
-private:
-	std::list<Component> components;
+	template<class C>
+	Component &GetComponent(C componentType);
 
+private:
+	Transform transform;
+	std::list<Component> components;
 };
