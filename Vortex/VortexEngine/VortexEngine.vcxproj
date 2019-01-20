@@ -22,6 +22,7 @@
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Vector.cpp" />
