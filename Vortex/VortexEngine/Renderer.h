@@ -5,27 +5,28 @@
 #include "Vector.h"
 #include "Shader.h"
 
+#include "Material.h"
+
 typedef struct GLFWwindow;
 typedef unsigned int GLuint;
 
 namespace Vortex
 {
 	namespace Graphics {
-		typedef enum ShaderType { VERTEX, FRAGMENT, GEOMETRY };
 		struct Buffer {
 			unsigned int VAO, VBO, EBO;
 		};
-#define VR VRenderer::Instance()
+#define VR VEngine::Instance()
 
-		class VRenderer
+		class VEngine
 		{
 		public:
-			VRenderer(VRenderer const&) = delete;
-			VRenderer& operator=(VRenderer const&) = delete;
-			~VRenderer();
+			VEngine(VEngine const&) = delete;
+			VEngine& operator=(VEngine const&) = delete;
+			~VEngine();
 
-			static std::shared_ptr<VRenderer> Instance() {
-				static std::shared_ptr<VRenderer> instance{ new VRenderer };
+			static std::shared_ptr<VEngine> Instance() {
+				static std::shared_ptr<VEngine> instance{ new VEngine };
 				return instance;
 			}
 
@@ -46,7 +47,7 @@ namespace Vortex
 			void BindAndSetBuffers(const char* bufferId, void* vertices, int verticesArrayCount, void* indices, int indicesArrayCount);
 
 		private:
-			VRenderer();
+			VEngine();
 
 			GLFWwindow* window;
 
@@ -56,7 +57,7 @@ namespace Vortex
 		};
 
 		
-		void DrawElements(Buffer* buff);
+		void DrawElements(Buffer* buff, Material* tex);
 
 		void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	}	

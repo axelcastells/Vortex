@@ -15,22 +15,24 @@ int main()
 	//VR->Run();
 
 	float vertices[] = {
-		// positions         // colors
-		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-		 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+		// positions          // colors           // texture coords
+		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 2,   // first triangle
-		//1, 2, 0    // second triangle
+		0, 2, 3    // second triangle
 	};
 
 	float *vptr;
 	vptr = vertices;
 	
 	VR->CreateShader(prog, ".\\vertexShader", ".\\fragmentShader");
-
-	VR->BindAndSetBuffers(buff, vertices, 18, indices, 6);
+	Material mat = Material(VR->GetShader(prog));
+	mat.tex = Texture(".\\tex.jpg");
+	VR->BindAndSetBuffers(buff, vertices, 32, indices, 6);
 
 	while (!VR->WindowShouldClose()) {
 		VI->ProcessInput(VR->GetWindow());
@@ -38,7 +40,7 @@ int main()
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 
 		VR->GetShader(prog)->Use();
-		DrawElements(VR->GetBuffer(buff));
+		DrawElements(VR->GetBuffer(buff), &mat);
 		
 		VR->SwapBuffers();
 		VI->PollEvents();

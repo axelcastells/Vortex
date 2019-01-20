@@ -20,7 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="VInput.cpp" />
@@ -30,7 +34,11 @@
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="DataManager.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="VMath.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Entity.h" />
@@ -39,8 +47,8 @@
     <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragmentshader" />
-    <None Include="vertexshader" />
+    <None Include="shaders\fragmentshader" />
+    <None Include="shaders\vertexshader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
