@@ -19,6 +19,7 @@ namespace Vortex {
 		Vector operator*(Vector v);
 		Vector operator/(Vector v);
 
+		Vector operator+(float f);
 		Vector operator*(float f);
 #pragma endregion
 

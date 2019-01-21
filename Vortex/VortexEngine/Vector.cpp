@@ -60,6 +60,11 @@ Vector Vortex::Vector::operator/(Vector v)
 	return Vector(x / v.x, y / v.y, z / v.z);
 }
 
+Vector Vortex::Vector::operator+(float f)
+{
+	return Vector(x + f, y + f, z + f);
+}
+
 Vector Vortex::Vector::operator*(float f)
 {
 	return Vector(x * f, y * f, z * f);
