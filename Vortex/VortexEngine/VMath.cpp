@@ -16,9 +16,25 @@ double Vortex::Math::Pow(double val, double exponent)
 	return pow(val, exponent);
 }
 
-float Vortex::Math::Clamp(float value, float min, float max)
+double Vortex::Math::Clamp(double value, double min, double max)
 {
 	return (value < min) ? min : (value > max) ? max : value;
+}
+
+double Vortex::Math::Sin(double _angle)
+{
+	
+	return glm::sin(_angle);
+}
+
+double Vortex::Math::Cos(double _angle)
+{
+	return glm::cos(_angle);
+}
+
+double Vortex::Math::Acos(double _angle)
+{
+	return glm::acos(_angle);
 }
 
 Vector3 Vortex::Math::Translate(Vector3 _vec, Vector3 _trans)

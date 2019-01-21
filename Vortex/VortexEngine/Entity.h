@@ -33,6 +33,10 @@ public:
 		components.push_back(comp);
 	}
 
+	inline Transform &GetTransform() {
+		return transform;
+	}
+
 private:
 	Transform transform;
 	std::list<Component*> components;
