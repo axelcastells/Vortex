@@ -14,7 +14,7 @@ public:
 	inline Component & GetComponent()
 	{
 		try {
-			for (std::list<Component>::iterator it = components.begin(); it != components.end(); it++) {
+			for (std::list<Component*>::iterator it = components.begin(); it != components.end(); it++) {
 				if (dynamic_cast<C>(it))
 					return it;
 			}
@@ -29,13 +29,13 @@ public:
 	}
 
 	template<class C>
-	inline void AddComponent(Component comp) {
-
+	inline void AddComponent(Component *comp) {
+		components.push_back(comp);
 	}
 
 private:
 	Transform transform;
-	std::list<Component> components;
+	std::list<Component*> components;
 };
 
 

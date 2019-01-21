@@ -175,7 +175,7 @@ namespace glm
 	typedef double					highp_float64_t;
 	typedef double					float64_t;
 
-	// Vector bool
+	// Vector3 bool
 
 	typedef vec<1, bool, lowp>		lowp_bvec1;
 	typedef vec<2, bool, lowp>		lowp_bvec2;
@@ -197,7 +197,7 @@ namespace glm
 	typedef vec<3, bool, defaultp>	bvec3;
 	typedef vec<4, bool, defaultp>	bvec4;
 
-	// Vector int
+	// Vector3 int
 
 	typedef vec<1, i32, lowp>		lowp_ivec1;
 	typedef vec<2, i32, lowp>		lowp_ivec2;
@@ -299,7 +299,7 @@ namespace glm
 	typedef vec<3, i64, defaultp>	i64vec3;
 	typedef vec<4, i64, defaultp>	i64vec4;
 
-	// Vector uint
+	// Vector3 uint
 
 	typedef vec<1, u32, lowp>		lowp_uvec1;
 	typedef vec<2, u32, lowp>		lowp_uvec2;
@@ -401,7 +401,7 @@ namespace glm
 	typedef vec<3, u64, defaultp>	u64vec3;
 	typedef vec<4, u64, defaultp>	u64vec4;
 
-	// Vector float
+	// Vector3 float
 
 	typedef vec<1, float, lowp>			lowp_vec1;
 	typedef vec<2, float, lowp>			lowp_vec2;

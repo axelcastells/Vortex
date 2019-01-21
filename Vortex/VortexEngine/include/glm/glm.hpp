@@ -15,16 +15,16 @@
 /// GLM core functionalities require <glm/glm.hpp> to be included to be used.
 ///
 ///
-/// @defgroup core_vector Vector types
+/// @defgroup core_vector Vector3 types
 ///
-/// Vector types of two to four components with an exhaustive set of operators.
+/// Vector3 types of two to four components with an exhaustive set of operators.
 ///
 /// @ingroup core
 ///
 ///
-/// @defgroup core_vector_precision Vector types with precision qualifiers
+/// @defgroup core_vector_precision Vector3 types with precision qualifiers
 ///
-/// @brief Vector types with precision qualifiers which may result in various precision in term of ULPs
+/// @brief Vector3 types with precision qualifiers which may result in various precision in term of ULPs
 ///
 /// GLSL allows defining qualifiers for particular variables.
 /// With OpenGL's GLSL, these qualifiers have no effect; they are there for compatibility,
