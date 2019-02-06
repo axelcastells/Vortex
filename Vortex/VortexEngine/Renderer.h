@@ -56,6 +56,7 @@ namespace Vortex
 			
 		};
 
+		void SetTransformations(const char* shaderName, float width, float height);
 		
 		void DrawElements(Buffer* buff, Material* tex);
 

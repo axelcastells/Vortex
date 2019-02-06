@@ -8,6 +8,10 @@
 #include "Input.h"
 #include "ResourcesManager.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 using namespace Vortex::Graphics;
 using namespace Vortex::Input;
 
@@ -75,8 +79,27 @@ void VEngine::Terminate() {
 	glfwTerminate();
 }
 
+void Vortex::Graphics::SetTransformations(const char* shaderName, float width, float height)
+{
+	// Transformations
+	glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+	projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+	// retrieve the matrix uniform locations
+	unsigned int modelLoc = glGetUniformLocation(VR->GetShader(shaderName)->GetID(), "model");
+	unsigned int viewLoc = glGetUniformLocation(VR->GetShader(shaderName)->GetID(), "view");
+	// pass them to the shaders (3 different ways)
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	VR->GetShader(shaderName)->SetMatrix4("projection", projection);
+
+}
+
 void Vortex::Graphics::DrawElements(Buffer* buff, Material* mat) {
-	mat->GetShader().Use();
 	// TODO: Bind all textures in material
 	glBindTexture(GL_TEXTURE_2D, mat->tex.GetID());
 

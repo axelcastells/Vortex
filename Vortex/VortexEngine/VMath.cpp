@@ -41,7 +41,7 @@ Vector3 Vortex::Math::Translate(Vector3 _vec, Vector3 _trans)
 {
 	glm::mat4 trans = glm::mat4(1.0f);
 	glm::vec4 vec(_vec.x, _vec.y, _vec.z, 1.0f);
-	
+
 	trans = glm::translate(trans, glm::vec3(_trans.x, _trans.y, _trans.z));
 	vec = trans * vec;
 	return Vector3(vec.x, vec.y, vec.z);

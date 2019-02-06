@@ -4,6 +4,7 @@
 #include <sstream>
 #include "ResourcesManager.h"
 #include <iostream>
+//#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(const char * vertexPath, const char * fragmentPath)
 {
@@ -57,6 +58,12 @@ void Shader::SetInt(const std::string & name, int value) const
 void Shader::SetFloat(const std::string & name, float value) const
 {
 	glUniform1f(glGetUniformLocation(id, name.c_str()), value);
+}
+
+void Shader::SetMatrix4(const std::string & name, glm::mat4 matrix) const
+{
+	int modelLoc = glGetUniformLocation(id, name.c_str());
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 unsigned int Shader::GetID()
