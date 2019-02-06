@@ -1,9 +1,9 @@
-#include "DataManager.h"
+#include "ResourcesManager.h"
 #include <sstream>
 #include <iostream>
 #include <fstream>
 
-using namespace DataManager;
+using namespace ResourcesManager;
 
 std::string FileManager::ReadFile(const char* filePath) {
 	std::ifstream shaderFile;
@@ -23,20 +23,4 @@ std::string FileManager::ReadFile(const char* filePath) {
 	{
 		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
 	}
-	//std::string content;
-	//std::ifstream shaderFile(filePath, std::ios::in);
-
-	//if (!shaderFile.is_open()) {
-	//	std::cerr << "Could not read file " << filePath << ". File does not exist." << std::endl;
-	//	return "";
-	//}
-
-	//std::string line = "";
-	//while (!shaderFile.eof()) {
-	//	std::getline(shaderFile, line);
-	//	content.append(line + "\n");
-	//}
-
-	//shaderFile.close();
-	//return content.c_str();
 }

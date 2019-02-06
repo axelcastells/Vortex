@@ -2,5 +2,6 @@
 
 Entity::Entity()
 {
+	components = std::list<Component*>();
 	transform = Transform();
 }

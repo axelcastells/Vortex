@@ -6,7 +6,7 @@
 
 #include "Renderer.h"
 #include "Input.h"
-#include "DataManager.h"
+#include "ResourcesManager.h"
 
 using namespace Vortex::Graphics;
 using namespace Vortex::Input;
@@ -76,6 +76,7 @@ void VEngine::Terminate() {
 }
 
 void Vortex::Graphics::DrawElements(Buffer* buff, Material* mat) {
+	mat->GetShader().Use();
 	// TODO: Bind all textures in material
 	glBindTexture(GL_TEXTURE_2D, mat->tex.GetID());
 

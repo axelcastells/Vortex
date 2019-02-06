@@ -2,6 +2,7 @@
 //
 #include <Renderer.h>
 #include <Input.h>
+#include <VMath.h>
 
 using namespace Vortex;
 using namespace Graphics;
@@ -10,9 +11,6 @@ int main()
 {
 	const char* buff = "mainBuffer";
 	const char* prog = "mainProgram";
-
-	VR->Init(500, 500, "VortexEngine - Game Window");
-	//VR->Run();
 
 	float vertices[] = {
 		// positions          // colors           // texture coords
@@ -26,34 +24,35 @@ int main()
 		0, 2, 3    // second triangle
 	};
 
-	float *vptr;
-	vptr = vertices;
+	VR->Init(500, 500, "VortexEngine - Game Window");
 	
 	VR->CreateShader(prog, ".\\vertexShader", ".\\fragmentShader");
 	Material mat = Material(VR->GetShader(prog));
 	mat.tex = Texture(".\\tex.jpg");
 	VR->BindAndSetBuffers(buff, vertices, 32, indices, 6);
-
+	//Vector3 vec;
 	while (!VR->WindowShouldClose()) {
+		// Input Event Managing
 		VI->ProcessInput(VR->GetWindow());
+		// Update Loop
+		//vec = Vector3(vertices[0], vertices[1], vertices[2]);
+		//vec = Math::Translate(vec, Vector3(0.00001f, 0, 0));
+		//vertices[0] = vec.x;
+		//vertices[1] = vec.y;
+		//vertices[2] = vec.z;
 
+		//std::cout << "Vertices: x: " << vertices[0] << " | y: " <<
+		//	vertices[1] << " | z: " << vertices[2] << std::endl;
+
+		// Draw Loop
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 
-		VR->GetShader(prog)->Use();
 		DrawElements(VR->GetBuffer(buff), &mat);
 		
+		// Swaping
 		VR->SwapBuffers();
 		VI->PollEvents();
 	}
 
 	VR->Terminate();
 }
-// Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
-// Depurar programa: F5 o menú Depurar > Iniciar depuración
-
-// Sugerencias para primeros pasos: 1. Use la ventana del Explorador de soluciones para agregar y administrar archivos
-//   2. Use la ventana de Team Explorer para conectar con el control de código fuente
-//   3. Use la ventana de salida para ver la salida de compilación y otros mensajes
-//   4. Use la ventana Lista de errores para ver los errores
-//   5. Vaya a Proyecto > Agregar nuevo elemento para crear nuevos archivos de código, o a Proyecto > Agregar elemento existente para agregar archivos de código existentes al proyecto
-//   6. En el futuro, para volver a abrir este proyecto, vaya a Archivo > Abrir > Proyecto y seleccione el archivo .sln

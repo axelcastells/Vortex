@@ -145,7 +145,7 @@ namespace Vortex
 
         public static Quaternion Normalize(Quaternion _q)
         {
-            float magnitude = (float)System.Math.Sqrt(System.Math.Pow(_q.x, 2) + System.Math.Pow(_q.y, 2) + System.Math.Pow(_q.z, 2));
+            float magnitude = (float)System.Math.Sqrt(System.Math.Pow(_q.w, 2) + System.Math.Pow(_q.x, 2) + System.Math.Pow(_q.y, 2) + System.Math.Pow(_q.z, 2));
             _q.w /= magnitude;
             _q.x /= magnitude;
             _q.y /= magnitude;

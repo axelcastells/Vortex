@@ -10,5 +10,5 @@ public:
 
 	Texture tex;
 private:
-	Shader shader;
+	Shader* shader;
 };
