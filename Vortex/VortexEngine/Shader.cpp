@@ -2,13 +2,13 @@
 #include <glad\glad.h>
 #include <fstream>
 #include <sstream>
-#include "DataManager.h"
+#include "ResourcesManager.h"
 #include <iostream>
 
 Shader::Shader(const char * vertexPath, const char * fragmentPath)
 {
-	std::string vertexCode = DataManager::FileManager::ReadFile(vertexPath);
-	std::string fragmentCode = DataManager::FileManager::ReadFile(fragmentPath);
+	std::string vertexCode = ResourcesManager::FileManager::ReadFile(vertexPath);
+	std::string fragmentCode = ResourcesManager::FileManager::ReadFile(fragmentPath);
 	std::ifstream vShaderFile;
 	std::ifstream fShaderFile;
 

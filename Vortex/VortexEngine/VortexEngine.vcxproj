@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Quaternion.cpp" />
@@ -35,7 +35,7 @@
   <ItemGroup>
     <ClInclude Include="AxisAngle.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="DataManager.h" />
+    <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Shader.h" />

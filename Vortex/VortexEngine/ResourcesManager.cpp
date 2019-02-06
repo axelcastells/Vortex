@@ -1,9 +1,9 @@
-#include "DataManager.h"
+#include "ResourcesManager.h"
 #include <sstream>
 #include <iostream>
 #include <fstream>
 
-using namespace DataManager;
+using namespace ResourcesManager;
 
 std::string FileManager::ReadFile(const char* filePath) {
 	std::ifstream shaderFile;

@@ -6,7 +6,7 @@
 
 #include "Renderer.h"
 #include "Input.h"
-#include "DataManager.h"
+#include "ResourcesManager.h"
 
 using namespace Vortex::Graphics;
 using namespace Vortex::Input;

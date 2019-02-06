@@ -35,5 +35,7 @@ namespace Vortex {
 
 		static float Magnitude(Vector3 v);
 		float Magnitude();
+
+		float Distance(Vector3 v1, Vector3 v2);
 	};
 }

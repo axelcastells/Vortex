@@ -91,3 +91,8 @@ float Vortex::Vector3::Magnitude()
 {
 	return Magnitude(*this);
 }
+
+float Vortex::Vector3::Distance(Vector3 v1, Vector3 v2)
+{
+	return Magnitude(v1 - v2);
+}

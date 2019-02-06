@@ -2,6 +2,7 @@
 //
 #include <Renderer.h>
 #include <Input.h>
+#include <VMath.h>
 
 using namespace Vortex;
 using namespace Graphics;
@@ -29,12 +30,19 @@ int main()
 	Material mat = Material(VR->GetShader(prog));
 	mat.tex = Texture(".\\tex.jpg");
 	VR->BindAndSetBuffers(buff, vertices, 32, indices, 6);
-
+	Vector3 vec;
 	while (!VR->WindowShouldClose()) {
 		// Input Event Managing
 		VI->ProcessInput(VR->GetWindow());
-
 		// Update Loop
+		vec = Vector3(vertices[0], vertices[1], vertices[2]);
+		vec = Math::Translate(vec, Vector3(0.00001f, 0, 0));
+		vertices[0] = vec.x;
+		vertices[1] = vec.y;
+		vertices[2] = vec.z;
+		
+		std::cout << "Vertices: x: " << vertices[0] << " | y: " <<
+			vertices[1] << " | z: " << vertices[2] << std::endl;
 
 		// Draw Loop
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
