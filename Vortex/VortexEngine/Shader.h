@@ -5,7 +5,7 @@ class Shader
 {
 public:
 	// the program ID
-	unsigned int ID;
+	unsigned int id;
 
 	// constructor reads and builds the shader
 	Shader() {};
@@ -16,6 +16,7 @@ public:
 	void SetBool(const std::string &name, bool value) const;
 	void SetInt(const std::string &name, int value) const;
 	void SetFloat(const std::string &name, float value) const;
+	unsigned int GetID();
 
 private:
 	void CheckCompileErrors(unsigned int shader, std::string type);

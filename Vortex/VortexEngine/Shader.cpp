@@ -29,11 +29,11 @@ Shader::Shader(const char * vertexPath, const char * fragmentPath)
 	glCompileShader(fragment);
 	CheckCompileErrors(fragment, "FRAGMENT");
 	// shader Program
-	ID = glCreateProgram();
-	glAttachShader(ID, vertex);
-	glAttachShader(ID, fragment);
-	glLinkProgram(ID);
-	CheckCompileErrors(ID, "PROGRAM");
+	id = glCreateProgram();
+	glAttachShader(id, vertex);
+	glAttachShader(id, fragment);
+	glLinkProgram(id);
+	CheckCompileErrors(id, "PROGRAM");
 	// delete the shaders as they're linked into our program now and no longer necessary
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
@@ -41,22 +41,27 @@ Shader::Shader(const char * vertexPath, const char * fragmentPath)
 
 void Shader::Use()
 {
-	glUseProgram(ID);
+	glUseProgram(id);
 }
 
 void Shader::SetBool(const std::string & name, bool value) const
 {
-	glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+	glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value);
 }
 
 void Shader::SetInt(const std::string & name, int value) const
 {
-	glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+	glUniform1i(glGetUniformLocation(id, name.c_str()), value);
 }
 
 void Shader::SetFloat(const std::string & name, float value) const
 {
-	glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+	glUniform1f(glGetUniformLocation(id, name.c_str()), value);
+}
+
+unsigned int Shader::GetID()
+{
+	return id;
 }
 
 void Shader::CheckCompileErrors(unsigned int shader, std::string type)
