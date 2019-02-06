@@ -11,9 +11,6 @@ int main()
 	const char* buff = "mainBuffer";
 	const char* prog = "mainProgram";
 
-	VR->Init(500, 500, "VortexEngine - Game Window");
-	//VR->Run();
-
 	float vertices[] = {
 		// positions          // colors           // texture coords
 		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
@@ -26,8 +23,7 @@ int main()
 		0, 2, 3    // second triangle
 	};
 
-	float *vptr;
-	vptr = vertices;
+	VR->Init(500, 500, "VortexEngine - Game Window");
 	
 	VR->CreateShader(prog, ".\\vertexShader", ".\\fragmentShader");
 	Material mat = Material(VR->GetShader(prog));
@@ -35,25 +31,20 @@ int main()
 	VR->BindAndSetBuffers(buff, vertices, 32, indices, 6);
 
 	while (!VR->WindowShouldClose()) {
+		// Input Event Managing
 		VI->ProcessInput(VR->GetWindow());
 
+		// Update Loop
+
+		// Draw Loop
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 
-		VR->GetShader(prog)->Use();
 		DrawElements(VR->GetBuffer(buff), &mat);
 		
+		// Swaping
 		VR->SwapBuffers();
 		VI->PollEvents();
 	}
 
 	VR->Terminate();
 }
-// Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
-// Depurar programa: F5 o menú Depurar > Iniciar depuración
-
-// Sugerencias para primeros pasos: 1. Use la ventana del Explorador de soluciones para agregar y administrar archivos
-//   2. Use la ventana de Team Explorer para conectar con el control de código fuente
-//   3. Use la ventana de salida para ver la salida de compilación y otros mensajes
-//   4. Use la ventana Lista de errores para ver los errores
-//   5. Vaya a Proyecto > Agregar nuevo elemento para crear nuevos archivos de código, o a Proyecto > Agregar elemento existente para agregar archivos de código existentes al proyecto
-//   6. En el futuro, para volver a abrir este proyecto, vaya a Archivo > Abrir > Proyecto y seleccione el archivo .sln

@@ -76,6 +76,7 @@ void VEngine::Terminate() {
 }
 
 void Vortex::Graphics::DrawElements(Buffer* buff, Material* mat) {
+	mat->GetShader().Use();
 	// TODO: Bind all textures in material
 	glBindTexture(GL_TEXTURE_2D, mat->tex.GetID());
 
