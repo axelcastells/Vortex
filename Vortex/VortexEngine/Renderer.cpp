@@ -79,7 +79,7 @@ void VEngine::Terminate() {
 	glfwTerminate();
 }
 
-void Vortex::Graphics::SetTransformations(const char* shaderName, float width, float height)
+void Vortex::Graphics::SetTransformations(Shader &shader, float width, float height)
 {
 	// Transformations
 	glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
@@ -89,14 +89,14 @@ void Vortex::Graphics::SetTransformations(const char* shaderName, float width, f
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 	projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 	// retrieve the matrix uniform locations
-	unsigned int modelLoc = glGetUniformLocation(VR->GetShader(shaderName)->GetID(), "model");
-	unsigned int viewLoc = glGetUniformLocation(VR->GetShader(shaderName)->GetID(), "view");
+	unsigned int modelLoc = glGetUniformLocation(shader.GetID(), "model");
+	unsigned int viewLoc = glGetUniformLocation(shader.GetID(), "view");
+	unsigned int projectionLoc = glGetUniformLocation(shader.GetID(), "projection");
 	// pass them to the shaders (3 different ways)
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
 	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-	VR->GetShader(shaderName)->SetMatrix4("projection", projection);
-
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 }
 
 void Vortex::Graphics::DrawElements(Buffer* buff, Material* mat) {

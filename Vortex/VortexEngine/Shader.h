@@ -1,14 +1,10 @@
 #pragma once
 #include <string>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "VMath.h"
 
 class Shader
 {
 public:
-	// the program ID
-	unsigned int id;
-
 	// constructor reads and builds the shader
 	Shader() {};
 	Shader(const char* vertexPath, const char* fragmentPath);
@@ -18,9 +14,11 @@ public:
 	void SetBool(const std::string &name, bool value) const;
 	void SetInt(const std::string &name, int value) const;
 	void SetFloat(const std::string &name, float value) const;
-	void SetMatrix4(const std::string &name, glm::mat4 matrix) const;
 	unsigned int GetID();
 
 private:
+	// the program ID
+	unsigned int id;
+
 	void CheckCompileErrors(unsigned int shader, std::string type);
 };

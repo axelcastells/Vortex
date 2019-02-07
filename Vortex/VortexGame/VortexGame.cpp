@@ -38,6 +38,9 @@ int main()
 		mat.GetShader().Use();
 
 		// Transformations
+		SetTransformations(mat.GetShader(), 500, 500);
+
+		
 
 		// Draw Loop
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
