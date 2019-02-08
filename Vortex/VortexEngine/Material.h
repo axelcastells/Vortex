@@ -4,6 +4,7 @@
 
 class Material {
 public:
+	Material();
 	Material(Shader *_shader);
 	void SetShader(Shader *_shader);
 	Shader &GetShader();

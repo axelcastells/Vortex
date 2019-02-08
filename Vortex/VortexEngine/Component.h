@@ -1,7 +1,6 @@
 #pragma once
-#include "Entity.h"
 
-class Component {
+virtual class Component {
 public:
 	//Entity &GetOwner();
 private:

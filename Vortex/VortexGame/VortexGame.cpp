@@ -1,8 +1,10 @@
 // VortexGame.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
-#include <Renderer.h>
+#include <Graphics.h>
 #include <Input.h>
 #include <VMath.h>
+#include <Entity.h>
+#include <Renderer.h>
 
 using namespace Vortex;
 using namespace Graphics;
@@ -12,6 +14,49 @@ int main()
 	const char* buff = "mainBuffer";
 	const char* prog = "mainProgram";
 
+	//float vertices[] = {
+	//-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	// 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	//-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	//-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	// 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	//-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	//-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	//-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	//-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	// 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	// 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	// 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	// 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	// 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	// 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	//-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	//-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	//-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	// 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	// 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	//-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	//-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	//};
 	float vertices[] = {
 		// positions          // colors           // texture coords
 		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
@@ -26,26 +71,31 @@ int main()
 
 	VR->Init(500, 500, "VortexEngine - Game Window");
 	
-	VR->CreateShader(prog, ".\\vertexShader", ".\\fragmentShader");
-	Material mat = Material(VR->GetShader(prog));
-	mat.tex = Texture(".\\tex.jpg");
-	VR->BindAndSetBuffers(buff, vertices, 32, indices, 6);
+	//VR->CreateShader(prog, ".\\vertexShader", ".\\fragmentShader");
+	//Material mat = Material(new Shader(".\\vertexShader", ".\\fragmentShader"));
+	//mat.tex = Texture(".\\tex.jpg");
+	//VR->BindAndSetBuffers(buff, vertices, 32, indices, 6);
 	//Vector3 vec;
+
+	Entity ent;
+	ent = Entity();
+	ent.AddComponent(new Renderer());
+
 	while (!VR->WindowShouldClose()) {
 		// Input Event Managing
 		VI->ProcessInput(VR->GetWindow());
 		// Update Loop
-		mat.GetShader().Use();
+		//mat.GetShader().Use();
 
 		// Transformations
-		SetTransformations(mat.GetShader(), 500, 500);
+		//SetTransformations(mat.GetShader(), 500, 500);
 
 		
 
 		// Draw Loop
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 
-		DrawElements(VR->GetBuffer(buff), &mat);
+		//DrawElements(VR->GetBuffer(buff), &mat);
 		
 		// Swaping
 		VR->SwapBuffers();
