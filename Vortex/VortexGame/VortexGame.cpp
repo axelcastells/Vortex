@@ -88,19 +88,13 @@ int main()
 	while (!VR->WindowShouldClose()) {
 		// Input Event Managing
 		VI->ProcessInput(VR->GetWindow());
+		
 		// Update Loop
 		e.Update();
-		//mat.GetShader().Use();
-
-		// Transformations
-		//SetTransformations(mat.GetShader(), 500, 500);
-
-		
 
 		// Draw Loop
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 		e.Draw();
-		//DrawElements(VR->GetBuffer(buff), &mat);
 		
 		// Swaping
 		VR->SwapBuffers();
