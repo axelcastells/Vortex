@@ -73,17 +73,23 @@ int main()
 	//VR->BindAndSetBuffers(buff, vertices, 32, indices, 6);
 	//Vector3 vec;
 
-	Renderer r;
-	r = Renderer();
-	r.SetMaterial(new Material(new Shader(".\\vertexShader", ".\\fragmentShader")));
-	r.GetMaterial().tex = Texture(".\\tex.jpg");
-	r.SetMeshData(vertices, 32, indices, 6);
+	//Renderer r;
+	//r = Renderer();
+	//r.SetMaterial(new Material(new Shader(".\\vertexShader", ".\\fragmentShader")));
+	//r.GetMaterial().tex = Texture(".\\tex.jpg");
+	//r.SetMeshData(vertices, 32, indices, 6);
+
+	Entity e = Entity();
+	e.AddComponent<Renderer>();
+	e.GetComponent<Renderer>()->SetMaterial(new Material(new Shader(".\\vertexShader", ".\\fragmentShader")));
+	e.GetComponent<Renderer>()->GetMaterial().tex = Texture(".\\tex.jpg");
+	e.GetComponent<Renderer>()->SetMeshData(vertices, 32, indices, 6);
 
 	while (!VR->WindowShouldClose()) {
 		// Input Event Managing
 		VI->ProcessInput(VR->GetWindow());
 		// Update Loop
-		r.Update();
+		e.Update();
 		//mat.GetShader().Use();
 
 		// Transformations
@@ -93,7 +99,7 @@ int main()
 
 		// Draw Loop
 		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
-		r.Draw();
+		e.Draw();
 		//DrawElements(VR->GetBuffer(buff), &mat);
 		
 		// Swaping

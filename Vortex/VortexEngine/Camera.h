@@ -1,9 +1,10 @@
 #pragma once
 #include "Component.h"
+#include "VMath.h"
 
-class Camera : Component {
+class Camera : public Component {
 public:
-
+	
 private:
 
 };

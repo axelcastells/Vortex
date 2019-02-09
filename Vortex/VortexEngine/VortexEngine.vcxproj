@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityComponentSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityComponentSystem.hpp" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Material.h" />
