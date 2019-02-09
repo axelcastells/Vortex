@@ -4,6 +4,7 @@
 #include <sstream>
 #include "ResourcesManager.h"
 #include <iostream>
+//#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(const char * vertexPath, const char * fragmentPath)
 {

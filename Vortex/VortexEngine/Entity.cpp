@@ -1,7 +1,17 @@
 #include "Entity.h"
 
-Entity::Entity()
-{
-	components = std::list<Component*>();
-	transform = Transform();
+Entity::Entity() {
+
+}
+
+Entity::~Entity() {
+
+}
+
+void Entity::AddComponent(Component* comp) {
+	childComponents.push_back(comp);
+}
+
+Component &Entity::GetComponent() {
+	return *childComponents[0];
 }

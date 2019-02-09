@@ -1,5 +1,9 @@
 #include "Material.h"
 
+Material::Material()
+{
+}
+
 Material::Material(Shader *_shader)
 {
 	shader = _shader;

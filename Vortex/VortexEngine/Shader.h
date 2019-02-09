@@ -1,12 +1,10 @@
 #pragma once
 #include <string>
+#include "VMath.h"
 
 class Shader
 {
 public:
-	// the program ID
-	unsigned int id;
-
 	// constructor reads and builds the shader
 	Shader() {};
 	Shader(const char* vertexPath, const char* fragmentPath);
@@ -19,5 +17,8 @@ public:
 	unsigned int GetID();
 
 private:
+	// the program ID
+	unsigned int id;
+
 	void CheckCompileErrors(unsigned int shader, std::string type);
 };
