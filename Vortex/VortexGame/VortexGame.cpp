@@ -1,10 +1,6 @@
 // VortexGame.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
-#include <Graphics.h>
-#include <Input.h>
-#include <VMath.h>
-#include <Entity.h>
-#include <Renderer.h>
+#include <VortexCore.h>
 
 using namespace Vortex;
 using namespace Graphics;

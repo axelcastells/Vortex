@@ -52,6 +52,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="MemoryAllocator.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="VortexCore.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragmentshader" />
