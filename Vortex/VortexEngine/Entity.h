@@ -1,5 +1,5 @@
 #pragma once
-#include <list>
+#include <vector>
 #include "Transform.h"
 #include "Component.h"
 
@@ -12,8 +12,7 @@ public:
 	void AddComponent(Component* comp);
 
 	Transform &GetTransform();
-
 private:
 	Transform transform;
-	std::list<Component*> childComponents;
+	std::vector<Component*> childComponents;
 };

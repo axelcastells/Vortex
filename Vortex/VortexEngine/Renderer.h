@@ -8,18 +8,19 @@ struct Buffer {
 	unsigned int VAO, VBO, EBO;
 };
 
-class Renderer : Component {
+class Renderer : public Component {
 public:
 	Renderer();
 	~Renderer();
 
-	void Draw();
-	void SetMaterial(Material* mat);
-	void SetTransformations();
+	void Update() override;
+	void Draw() override;
+	
 	void SetMeshData(void* vertices, int verticesArrayCount, void* indices, int indicesArrayCount);
+	void SetMaterial(Material* mat);
+	Material &GetMaterial();
+	void SetTransformations();
 private:
 	Buffer* buff;
 	Material* material;
-	std::list<float> vertexData;
-	std::list<float> indexData;
 };

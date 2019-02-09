@@ -7,7 +7,18 @@
 
 Renderer::Renderer()
 {
+	buff = new Buffer();
+	material = new Material();
+}
 
+Renderer::~Renderer() {
+
+}
+
+void Renderer::Update()
+{
+	material->GetShader().Use();
+	SetTransformations();
 }
 
 void Renderer::Draw()
@@ -27,6 +38,12 @@ void Renderer::Draw()
 void Renderer::SetMaterial(Material* mat)
 {
 	material = mat;
+}
+
+Material & Renderer::GetMaterial()
+{
+	return *material;
+	// TODO: insertar una instrucción return aquí
 }
 
 void Renderer::SetTransformations()
@@ -54,20 +71,19 @@ void Renderer::SetTransformations()
 
 void Renderer::SetMeshData(void * vertices, int verticesArrayCount, void * indices, int indicesArrayCount)
 {
-	Buffer buff;
-	glGenVertexArrays(1, &buff.VAO);
-	glGenBuffers(1, &buff.VBO);
-	glGenBuffers(1, &buff.EBO);
+	glGenVertexArrays(1, &buff->VAO);
+	glGenBuffers(1, &buff->VBO);
+	glGenBuffers(1, &buff->EBO);
 
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 
 	// 1. bind Vertex Array Objects
-	glBindVertexArray(buff.VAO);
+	glBindVertexArray(buff->VAO);
 	// 2. copy our vertices array in a vertex buffer for OpenGL to use
-	glBindBuffer(GL_ARRAY_BUFFER, buff.VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, buff->VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices)*verticesArrayCount, vertices, GL_STATIC_DRAW);
 	// 3. copy our index array in a element buffer for OpenGL to use
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buff.EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buff->EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices)*indicesArrayCount, indices, GL_STATIC_DRAW);
 	// 4. then set the vertex attributes pointers
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
