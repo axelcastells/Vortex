@@ -65,41 +65,29 @@ int main()
 		0, 2, 3    // second triangle
 	};
 
-	VR->Init(500, 500, "VortexEngine - Game Window");
+	VCS->Init(500, 500, "VortexEngine - Game Window");
 	
-	//VR->CreateShader(prog, ".\\vertexShader", ".\\fragmentShader");
-	//Material mat = Material(new Shader(".\\vertexShader", ".\\fragmentShader"));
-	//mat.tex = Texture(".\\tex.jpg");
-	//VR->BindAndSetBuffers(buff, vertices, 32, indices, 6);
-	//Vector3 vec;
-
-	//Renderer r;
-	//r = Renderer();
-	//r.SetMaterial(new Material(new Shader(".\\vertexShader", ".\\fragmentShader")));
-	//r.GetMaterial().tex = Texture(".\\tex.jpg");
-	//r.SetMeshData(vertices, 32, indices, 6);
-
 	Entity e = Entity();
 	e.AddComponent<Renderer>();
 	e.GetComponent<Renderer>()->SetMaterial(new Material(new Shader(".\\vertexShader", ".\\fragmentShader")));
 	e.GetComponent<Renderer>()->GetMaterial().tex = Texture(".\\tex.jpg");
 	e.GetComponent<Renderer>()->SetMeshData(vertices, 32, indices, 6);
 
-	while (!VR->WindowShouldClose()) {
+	while (!VCS->WindowShouldClose()) {
 		// Input Event Managing
-		VI->ProcessInput(VR->GetWindow());
+		VI->ProcessInput(VCS->GetWindow());
 		
 		// Update Loop
 		e.Update();
 
 		// Draw Loop
-		VR->ClearScreen(0.3f, 0.3f, 0.3f, 1);
+		VCS->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 		e.Draw();
 		
 		// Swaping
-		VR->SwapBuffers();
+		VCS->SwapBuffers();
 		VI->PollEvents();
 	}
 
-	VR->Terminate();
+	VCS->Terminate();
 }

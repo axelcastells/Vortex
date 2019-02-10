@@ -16,17 +16,17 @@ namespace Vortex
 		//struct Buffer {
 		//	unsigned int VAO, VBO, EBO;
 		//};
-#define VR VEngine::Instance()
+#define VCS VortexCoreSystem::Instance()
 
-		class VEngine
+		class VortexCoreSystem
 		{
 		public:
-			VEngine(VEngine const&) = delete;
-			VEngine& operator=(VEngine const&) = delete;
-			~VEngine();
+			VortexCoreSystem(VortexCoreSystem const&) = delete;
+			VortexCoreSystem& operator=(VortexCoreSystem const&) = delete;
+			~VortexCoreSystem();
 
-			static std::shared_ptr<VEngine> Instance() {
-				static std::shared_ptr<VEngine> instance{ new VEngine };
+			static std::shared_ptr<VortexCoreSystem> Instance() {
+				static std::shared_ptr<VortexCoreSystem> instance{ new VortexCoreSystem };
 				return instance;
 			}
 
@@ -46,7 +46,7 @@ namespace Vortex
 			/// Bind and set buffers as GL_ELEMENT_ARRAY_BUFFER
 			//void BindAndSetBuffers(const char* bufferId, void* vertices, int verticesArrayCount, void* indices, int indicesArrayCount);
 		private:
-			VEngine();
+			VortexCoreSystem();
 
 			GLFWwindow* window;
 
