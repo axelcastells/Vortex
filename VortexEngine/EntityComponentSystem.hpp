@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <map>
 #include <memory>
 #include "Entity.h"
 #include "Component.h"
@@ -16,13 +16,16 @@ public:
 		static std::shared_ptr<EntityComponentSystem> instance{ new EntityComponentSystem };
 		return instance;
 	}
+	Entity &CreateEntity(long *outId);
+	void DeleteEntity(long _uniqueId);
 
-	Entity &CreateEntity();
-	Component &CreateComponent(Entity* owner);
+	Entity &GetEntity(long _uniqueId);
+
+	Entity &GetComponentOwner(long entityId);
+
 private:
 	EntityComponentSystem();
-
-	std::vector<Entity*> entities;
-	std::vector<Component*> components;
-	std::vector < std::pair<Entity&, Component&>> relations;
+	long freeEntityId;
+	long GenerateEntityID();
+	std::map<long, Entity*> entities;
 };

@@ -10,9 +10,11 @@ struct Buffer {
 
 class Renderer : public Component {
 public:
-	Renderer();
+	using Component::Component;
+	Renderer() = delete;
 	~Renderer();
 
+	void Init() override;
 	void Update() override;
 	void Draw() override;
 	

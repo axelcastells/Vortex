@@ -67,8 +67,10 @@ int main()
 
 	VCS->Init(500, 500, "VortexEngine - Game Window");
 	
-	Entity e = Entity();
+	long eId;
+	Entity &e = ECS->CreateEntity(&eId);
 	e.AddComponent<Renderer>();
+	e.GetComponent<Renderer>()->Init();
 	e.GetComponent<Renderer>()->SetMaterial(new Material(new Shader(".\\vertexShader", ".\\fragmentShader")));
 	e.GetComponent<Renderer>()->GetMaterial().tex = Texture(".\\tex.jpg");
 	e.GetComponent<Renderer>()->SetMeshData(vertices, 32, indices, 6);
@@ -78,11 +80,11 @@ int main()
 		VI->ProcessInput(VCS->GetWindow());
 		
 		// Update Loop
-		e.Update();
+		e.InternalUpdate();
 
 		// Draw Loop
 		VCS->ClearScreen(0.3f, 0.3f, 0.3f, 1);
-		e.Draw();
+		e.InternalDraw();
 		
 		// Swaping
 		VCS->SwapBuffers();

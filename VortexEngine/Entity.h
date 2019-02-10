@@ -7,11 +7,18 @@
 
 class Entity {
 public:
-	Entity();
+	Entity(long id);
 	~Entity();
 
-	void Update();
-	void Draw();
+	virtual void Update(){}
+	virtual void Draw(){}
+
+	void InternalUpdate();
+	void InternalDraw();
+
+	inline long GetID() {
+		return uniqueID;
+	}
 
 	template<typename C>
 	inline std::shared_ptr<C> GetComponent() {
@@ -27,12 +34,13 @@ public:
 	{
 		if (childComponents.count(std::type_index(typeid(C))) == 0)
 		{
-			childComponents[std::type_index(typeid(C))] = std::shared_ptr<C>(new C());
+			childComponents[std::type_index(typeid(C))] = std::shared_ptr<C>(new C(uniqueID));
 		}
 	}
 
 	Transform &GetTransform();
 private:
+	long uniqueID;
 	Transform transform;
 	std::map<std::type_index, std::shared_ptr<Component>> childComponents;
 };

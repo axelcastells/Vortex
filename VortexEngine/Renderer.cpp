@@ -5,14 +5,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Renderer::Renderer()
+Renderer::~Renderer() {
+
+}
+
+void Renderer::Init()
 {
 	buff = new Buffer();
 	material = new Material();
-}
-
-Renderer::~Renderer() {
-
 }
 
 void Renderer::Update()
