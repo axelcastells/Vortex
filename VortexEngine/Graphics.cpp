@@ -30,6 +30,7 @@ void VortexCoreSystem::Init(int w, int h, const char* windowTitle) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Only for Mac OS X
 	
+
 	window = glfwCreateWindow(w, h, windowTitle, NULL, NULL);
 	if (window == NULL) {
 		//Error
@@ -43,6 +44,10 @@ void VortexCoreSystem::Init(int w, int h, const char* windowTitle) {
 		//Error
 		std::cout << "Failed to initialize GLAD" << std::endl;
 	}
+
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 }
 
 //void Vortex::Graphics::VEngine::CreateShader(const char * nameId, const char * vertexPath, const char * fragmentPath)

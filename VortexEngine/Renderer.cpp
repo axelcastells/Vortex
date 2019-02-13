@@ -24,7 +24,7 @@ void Renderer::Update()
 void Renderer::Draw()
 {
 	// TODO: Bind all textures in material
-	glEnable(GL_DEPTH_TEST);
+	
 	glBindTexture(GL_TEXTURE_2D, material->tex.GetID());
 
 	glBindVertexArray(buff->VBO);
