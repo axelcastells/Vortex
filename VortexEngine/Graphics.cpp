@@ -15,21 +15,22 @@
 using namespace Vortex::Graphics;
 using namespace Vortex::Input;
 
-VEngine::VEngine() {
+VortexEngine::VortexEngine() {
 
 }
 
-VEngine::~VEngine() {
+VortexEngine::~VortexEngine() {
 	delete &window;
 }
 
-void VEngine::Init(int w, int h, const char* windowTitle) {
+void VortexEngine::Init(int w, int h, const char* windowTitle) {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Only for Mac OS X
 	
+
 	window = glfwCreateWindow(w, h, windowTitle, NULL, NULL);
 	if (window == NULL) {
 		//Error
@@ -43,6 +44,10 @@ void VEngine::Init(int w, int h, const char* windowTitle) {
 		//Error
 		std::cout << "Failed to initialize GLAD" << std::endl;
 	}
+
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 }
 
 //void Vortex::Graphics::VEngine::CreateShader(const char * nameId, const char * vertexPath, const char * fragmentPath)
@@ -60,19 +65,19 @@ void VEngine::Init(int w, int h, const char* windowTitle) {
 //	return &buffers[name];
 //}
 
-bool VEngine::WindowShouldClose() {
+bool VortexEngine::WindowShouldClose() {
 	return glfwWindowShouldClose(window);
 }
 
-GLFWwindow* VEngine::GetWindow() {
+GLFWwindow* VortexEngine::GetWindow() {
 	return window;
 }
 
-void VEngine::SwapBuffers() {
+void VortexEngine::SwapBuffers() {
 	glfwSwapBuffers(window);
 }
 
-void VEngine::Terminate() {
+void VortexEngine::Terminate() {
 	//glDeleteVertexArrays(1, &VAO);
 	//glDeleteBuffers(1, &VBO);
 
@@ -156,7 +161,7 @@ void Vortex::Graphics::FramebufferSizeCallback(GLFWwindow* window, int width, in
 // Creates and links the shader program using all compiled shaders in compiledShaders list
 // shaderNames is a pointer to char array
 
-void VEngine::ClearScreen(float r, float g, float b, float a) {
+void VortexEngine::ClearScreen(float r, float g, float b, float a) {
 	glClearColor(r, g, b, a);
 	//glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

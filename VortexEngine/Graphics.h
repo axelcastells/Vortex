@@ -4,6 +4,7 @@
 #include <list>
 #include "Vector.h"
 #include "Shader.h"
+#include "Camera.h"
 
 #include "Material.h"
 
@@ -16,17 +17,17 @@ namespace Vortex
 		//struct Buffer {
 		//	unsigned int VAO, VBO, EBO;
 		//};
-#define VR VEngine::Instance()
+#define VE VortexEngine::Instance()
 
-		class VEngine
+		class VortexEngine
 		{
 		public:
-			VEngine(VEngine const&) = delete;
-			VEngine& operator=(VEngine const&) = delete;
-			~VEngine();
+			VortexEngine(VortexEngine const&) = delete;
+			VortexEngine& operator=(VortexEngine const&) = delete;
+			~VortexEngine();
 
-			static std::shared_ptr<VEngine> Instance() {
-				static std::shared_ptr<VEngine> instance{ new VEngine };
+			static std::shared_ptr<VortexEngine> Instance() {
+				static std::shared_ptr<VortexEngine> instance{ new VortexEngine };
 				return instance;
 			}
 
@@ -46,7 +47,7 @@ namespace Vortex
 			/// Bind and set buffers as GL_ELEMENT_ARRAY_BUFFER
 			//void BindAndSetBuffers(const char* bufferId, void* vertices, int verticesArrayCount, void* indices, int indicesArrayCount);
 		private:
-			VEngine();
+			VortexEngine();
 
 			GLFWwindow* window;
 

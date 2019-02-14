@@ -5,26 +5,26 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Renderer::Renderer()
+Renderer::~Renderer() {
+
+}
+
+void Renderer::Init()
 {
 	buff = new Buffer();
 	material = new Material();
 }
 
-Renderer::~Renderer() {
-
-}
-
 void Renderer::Update()
 {
 	material->GetShader().Use();
-	SetTransformations();
+	SetTransformations(Vector3(1,0,-3), AxisAngle(1,0,0,-55));
 }
 
 void Renderer::Draw()
 {
 	// TODO: Bind all textures in material
-	glEnable(GL_DEPTH_TEST);
+	
 	glBindTexture(GL_TEXTURE_2D, material->tex.GetID());
 
 	glBindVertexArray(buff->VBO);
@@ -46,7 +46,7 @@ Material & Renderer::GetMaterial()
 	// TODO: insertar una instrucción return aquí
 }
 
-void Renderer::SetTransformations()
+void Renderer::SetTransformations(Vortex::Vector3 position, AxisAngle axisAngle/*, Camera &camera*/)
 {
 	float width, height;
 	width = 500;
@@ -55,8 +55,8 @@ void Renderer::SetTransformations()
 	glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
-	model = glm::rotate(model, glm::radians(-55.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+	model = glm::rotate(model, glm::radians(axisAngle.angle) * (float)glfwGetTime(), glm::vec3(axisAngle.x, axisAngle.y, axisAngle.z));
+	view = glm::translate(view, glm::vec3(position.x, position.y, position.z));
 	projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 	// retrieve the matrix uniform locations
 	unsigned int modelLoc = glGetUniformLocation(material->GetShader().GetID(), "model");
