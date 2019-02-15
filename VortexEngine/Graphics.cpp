@@ -15,15 +15,15 @@
 using namespace Vortex::Graphics;
 using namespace Vortex::Input;
 
-VortexEngine::VortexEngine() {
+VortexRenderSystem::VortexRenderSystem() {
 
 }
 
-VortexEngine::~VortexEngine() {
+VortexRenderSystem::~VortexRenderSystem() {
 	delete &window;
 }
 
-void VortexEngine::Init(int w, int h, const char* windowTitle) {
+void VortexRenderSystem::Init(int w, int h, const char* windowTitle) {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -65,19 +65,19 @@ void VortexEngine::Init(int w, int h, const char* windowTitle) {
 //	return &buffers[name];
 //}
 
-bool VortexEngine::WindowShouldClose() {
+bool VortexRenderSystem::WindowShouldClose() {
 	return glfwWindowShouldClose(window);
 }
 
-GLFWwindow* VortexEngine::GetWindow() {
+GLFWwindow* VortexRenderSystem::GetWindow() {
 	return window;
 }
 
-void VortexEngine::SwapBuffers() {
+void VortexRenderSystem::SwapBuffers() {
 	glfwSwapBuffers(window);
 }
 
-void VortexEngine::Terminate() {
+void VortexRenderSystem::Terminate() {
 	//glDeleteVertexArrays(1, &VAO);
 	//glDeleteBuffers(1, &VBO);
 
@@ -161,7 +161,7 @@ void Vortex::Graphics::FramebufferSizeCallback(GLFWwindow* window, int width, in
 // Creates and links the shader program using all compiled shaders in compiledShaders list
 // shaderNames is a pointer to char array
 
-void VortexEngine::ClearScreen(float r, float g, float b, float a) {
+void VortexRenderSystem::ClearScreen(float r, float g, float b, float a) {
 	glClearColor(r, g, b, a);
 	//glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

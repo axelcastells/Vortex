@@ -19,7 +19,7 @@ int main()
 		0, 2, 3    // second triangle
 	};
 
-	VE->Init(500, 500, "VortexEngine - Game Window");
+	VRS->Init(500, 500, "VortexEngine - Game Window");
 	
 	long eId;
 	Entity &e = ECS->CreateEntity(&eId);
@@ -29,21 +29,21 @@ int main()
 	e.GetComponent<Renderer>()->GetMaterial().tex = Texture(".\\tex.jpg");
 	e.GetComponent<Renderer>()->SetMeshData(vertices, 32, indices, 6);
 
-	while (!VE->WindowShouldClose()) {
+	while (!VRS->WindowShouldClose()) {
 		// Input Event Managing
-		VI->ProcessInput(VE->GetWindow());
+		VI->ProcessInput(VRS->GetWindow());
 		
 		// Update Loop
 		e.InternalUpdate();
 
 		// Draw Loop
-		VE->ClearScreen(0.3f, 0.3f, 0.3f, 1);
+		VRS->ClearScreen(0.3f, 0.3f, 0.3f, 1);
 		e.InternalDraw();
 		
 		// Swaping
-		VE->SwapBuffers();
+		VRS->SwapBuffers();
 		VI->PollEvents();
 	}
 
-	VE->Terminate();
+	VRS->Terminate();
 }

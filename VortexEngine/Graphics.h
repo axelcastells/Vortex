@@ -11,23 +11,24 @@
 typedef struct GLFWwindow;
 typedef unsigned int GLuint;
 
+
 namespace Vortex
 {
 	namespace Graphics {
 		//struct Buffer {
 		//	unsigned int VAO, VBO, EBO;
 		//};
-#define VE VortexEngine::Instance()
+#define VRS VortexRenderSystem::Instance()
 
-		class VortexEngine
+		class VortexRenderSystem
 		{
 		public:
-			VortexEngine(VortexEngine const&) = delete;
-			VortexEngine& operator=(VortexEngine const&) = delete;
-			~VortexEngine();
+			VortexRenderSystem(VortexRenderSystem const&) = delete;
+			VortexRenderSystem& operator=(VortexRenderSystem const&) = delete;
+			~VortexRenderSystem();
 
-			static std::shared_ptr<VortexEngine> Instance() {
-				static std::shared_ptr<VortexEngine> instance{ new VortexEngine };
+			static std::shared_ptr<VortexRenderSystem> Instance() {
+				static std::shared_ptr<VortexRenderSystem> instance{ new VortexRenderSystem };
 				return instance;
 			}
 
@@ -47,7 +48,7 @@ namespace Vortex
 			/// Bind and set buffers as GL_ELEMENT_ARRAY_BUFFER
 			//void BindAndSetBuffers(const char* bufferId, void* vertices, int verticesArrayCount, void* indices, int indicesArrayCount);
 		private:
-			VortexEngine();
+			VortexRenderSystem();
 
 			GLFWwindow* window;
 
